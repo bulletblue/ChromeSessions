@@ -8,9 +8,13 @@ var Sessions = {
 
     startup: function() {
         var button = document.createElement("BUTTON");
+        button.setAttribute("id", "btn_getSessions");
+        button.setAttribute("onclick", "Sessions.scroll()");
         var buttonText = document.createTextNode("Click Me");
         button.appendChild(buttonText);
         doc_insert(button);
+
+
 
         //retrieve all sessions
     },
@@ -26,6 +30,7 @@ var Sessions = {
     },
 
     scroll: function() {
+        alert("Hello, World!");
     }
 };
 

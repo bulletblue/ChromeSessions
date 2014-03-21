@@ -7,35 +7,37 @@ function doc_insert(el) {
 var Sessions = {
 
     startup: function() {
+        var me = this;
         var button = document.createElement("BUTTON");
-        button.setAttribute("id", "btn_getSessions");
-        button.setAttribute("onclick", "Sessions.scroll()");
-        var buttonText = document.createTextNode("Click Me");
+        button.onclick = me.getSession;
+        
+        var buttonText = document.createTextNode("Get Session");
         button.appendChild(buttonText);
         doc_insert(button);
-
-
-
-        //retrieve all sessions
     },
 
     getSession: function()  {
+        var me = this;
         chrome.tabs.query({'currentWindow': true}, function(tabs) {
-            var newP = document.createElement("p");
-            var someText = document.createTextNode(tabs[1].url);
-            newP.appendChild(someText);
-            doc_insert(newP);
-            //document.body.insertBefore(newP, currentDiv);
-        });
-    },
+            var urls = [];
+            for (var i = 0; i < tabs.length; i++) {
+                urls[i] = tabs[i].url;
+        }
 
-    scroll: function() {
-        alert("Hello, World!");
+        chrome.windows.create({url: urls, focused: true});
+        });
     }
 };
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
   Sessions.startup();
 });
+
+
+
+/*var newP = document.createElement("p");
+var someText = document.createTextNode(allTabs);
+newP.appendChild(someText);
+doc_insert(newP);
+document.body.insertBefore(newP, currentDiv);*/

@@ -12,42 +12,51 @@ var Sessions = {
         var getButton = document.createElement("BUTTON");
         getButton.onclick = me.getSession;
         var getButtonText = document.createTextNode("Get Session");
-        getButton.appendChild(buttonText);
+        getButton.appendChild(getButtonText);
         doc_insert(getButton);
 
         var setButton = document.createElement("BUTTON");
         setButton.onclick = me.saveSession;
-        var buttonText = document.createTextNode("Save Session");
-        setButton.appendChild(buttonText);
+        var setButtonText = document.createTextNode("Save Session");
+        setButton.appendChild(setButtonText);
         doc_insert(setButton);
     },
 
     getSession: function()  {
-        chrome.windows.create({url: "http://yahoo.com", focused: true});
+        //chrome.windows.create({url: "http://yahoo.com", focused: true});
+
+        chrome.storage.sync.get(null, function(items) {
+            var newP = document.createElement("p");
+            var someText = document.createTextNode(items.urls[0]);
+            newP.appendChild(someText);
+            doc_insert(newP);
+            document.body.insertBefore(newP, currentDiv);
+        });
     },
 
     saveSession: function() {
         var me = this;
-        var urls = [];
+
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
+            var urls = [];
             for (var i = 0; i < tabs.length; i++) {
                 urls[i] = tabs[i].url;
             }
-        });
-        
-        chrome.storage.sync.set({'urls': urls}, function() {
-            alert ("plumpy stinks");
+            
+            chrome.storage.sync.set({'urls': urls}, function() {
+                alert ("Session Saved!");
+            });
         });
     },
 
     blah: function() {
-        alert(chrome.tabs);
+        alert(chrome.storage);
     }
 };
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  Sessions.blah();
+  Sessions.startup();
 });
 
 

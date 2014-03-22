@@ -8,15 +8,25 @@ var Sessions = {
 
     startup: function() {
         var me = this;
+
         var button = document.createElement("BUTTON");
         button.onclick = me.getSession;
-        
         var buttonText = document.createTextNode("Get Session");
+        button.appendChild(buttonText);
+        doc_insert(button);
+
+        var button = document.createElement("BUTTON");
+        button.onclick = me.saveSession;
+        var buttonText = document.createTextNode("Save Session");
         button.appendChild(buttonText);
         doc_insert(button);
     },
 
     getSession: function()  {
+        chrome.windows.create({url: "http://yahoo.com", focused: true});
+    },
+
+    saveSession: function() {
         var me = this;
         chrome.tabs.query({'currentWindow': true}, function(tabs) {
             var urls = [];
@@ -24,7 +34,7 @@ var Sessions = {
                 urls[i] = tabs[i].url;
         }
 
-        chrome.windows.create({url: urls, focused: true});
+        //chrome.storage.sync.set({'urls': urls})
         });
     }
 };

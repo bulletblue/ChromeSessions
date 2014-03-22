@@ -9,17 +9,17 @@ var Sessions = {
     startup: function() {
         var me = this;
 
-        var button = document.createElement("BUTTON");
-        button.onclick = me.getSession;
-        var buttonText = document.createTextNode("Get Session");
-        button.appendChild(buttonText);
-        doc_insert(button);
+        var getButton = document.createElement("BUTTON");
+        getButton.onclick = me.getSession;
+        var getButtonText = document.createTextNode("Get Session");
+        getButton.appendChild(buttonText);
+        doc_insert(getButton);
 
-        var button = document.createElement("BUTTON");
-        button.onclick = me.saveSession;
+        var setButton = document.createElement("BUTTON");
+        setButton.onclick = me.saveSession;
         var buttonText = document.createTextNode("Save Session");
-        button.appendChild(buttonText);
-        doc_insert(button);
+        setButton.appendChild(buttonText);
+        doc_insert(setButton);
     },
 
     getSession: function()  {
@@ -28,20 +28,26 @@ var Sessions = {
 
     saveSession: function() {
         var me = this;
-        chrome.tabs.query({'currentWindow': true}, function(tabs) {
-            var urls = [];
+        var urls = [];
+        chrome.tabs.query({"currentWindow": true}, function(tabs) {
             for (var i = 0; i < tabs.length; i++) {
                 urls[i] = tabs[i].url;
-        }
-
-        //chrome.storage.sync.set({'urls': urls})
+            }
         });
+        
+        chrome.storage.sync.set({'urls': urls}, function() {
+            alert ("plumpy stinks");
+        });
+    },
+
+    blah: function() {
+        alert(chrome.tabs);
     }
 };
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  Sessions.startup();
+  Sessions.blah();
 });
 
 

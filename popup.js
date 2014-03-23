@@ -4,16 +4,17 @@ function doc_insert(el) {
     document.body.insertBefore(el, currentDiv);
 }
 
+
 var Sessions = {
 
     startup: function() {
         var me = Sessions;
 
-        var getButton = document.createElement("BUTTON");
+        /*var getButton = document.createElement("BUTTON");
         getButton.onclick = me.getSession;
         var getButtonText = document.createTextNode("Get Session");
         getButton.appendChild(getButtonText);
-        doc_insert(getButton);
+        doc_insert(getButton);*/
 
         var setButton = document.createElement("BUTTON");
         setButton.onclick = me.saveSession;
@@ -23,11 +24,17 @@ var Sessions = {
     },
 
     getSession: function()  {
+        //OPEN THE SESSION HERE!
         //chrome.windows.create({url: "http://yahoo.com", focused: true});
 
         chrome.storage.sync.get(null, function(items) {
+            var allLinks = "";
+            for (var i = 0; i < items.urls.length; i++) {
+                allLinks += items.urls[i] + ",";
+            }
+
             var newP = document.createElement("p");
-            var someText = document.createTextNode(items.urls[0]);
+            var someText = document.createTextNode(allLinks);
             newP.appendChild(someText);
             doc_insert(newP);
             document.body.insertBefore(newP, currentDiv);
@@ -42,23 +49,37 @@ var Sessions = {
             for (var i = 0; i < tabs.length; i++) {
                 urls[i] = tabs[i].url;
             }
+
+            sessionKey = Date.now();
             
-            chrome.storage.sync.set({'urls': urls}, function() {
-                var getLink = document.createElement("BUTTON");
-                getLink.onclick = me.openTest;
-                var getLinkText = document.createTextNode("Open Session");
+            chrome.storage.sync.set({sessionKey: urls}, function() {
+                var getLink = document.createElement("p");
+                getLink.onclick = me.openSession(sessionKey);
+                var getLinkText = document.createTextNode(sessionKey);
                 getLink.appendChild(getLinkText);
                 doc_insert(getLink);
             });
         });
     },
 
-    openTest: function() {
-        var newP = document.createElement("p");
-        var someText = document.createTextNode("openTest");
-        newP.appendChild(someText);
-        doc_insert(newP);
-        document.body.insertBefore(newP, currentDiv);
+    openSession: function(sessionKey) {
+        //OPEN THE SESSION HERE!
+        //chrome.windows.create({url: "http://yahoo.com", focused: true});
+
+        chrome.storage.sync.get(sessionKey.toString(), function(items) {
+            chrome.windows.create({url: items.urls, focused: true});
+
+            /*var allLinks = [];
+            for (var i = 0; i < items.urls.length; i++) {
+                allLinks = items.urls[i];
+            }*/
+
+            /*var newP = document.createElement("p");
+            var someText = document.createTextNode(allLinks);
+            newP.appendChild(someText);
+            doc_insert(newP);
+            document.body.insertBefore(newP, currentDiv);*/
+        });
     }
 };
 

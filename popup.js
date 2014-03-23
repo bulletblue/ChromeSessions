@@ -7,7 +7,7 @@ function doc_insert(el) {
 var Sessions = {
 
     startup: function() {
-        var me = this;
+        var me = Sessions;
 
         var getButton = document.createElement("BUTTON");
         getButton.onclick = me.getSession;
@@ -35,7 +35,7 @@ var Sessions = {
     },
 
     saveSession: function() {
-        var me = this;
+        var me = Sessions;
 
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
             var urls = [];
@@ -44,13 +44,21 @@ var Sessions = {
             }
             
             chrome.storage.sync.set({'urls': urls}, function() {
-                alert ("Session Saved!");
+                var getLink = document.createElement("BUTTON");
+                getLink.onclick = me.openTest;
+                var getLinkText = document.createTextNode("Open Session");
+                getLink.appendChild(getLinkText);
+                doc_insert(getLink);
             });
         });
     },
 
-    blah: function() {
-        alert(chrome.storage);
+    openTest: function() {
+        var newP = document.createElement("p");
+        var someText = document.createTextNode("openTest");
+        newP.appendChild(someText);
+        doc_insert(newP);
+        document.body.insertBefore(newP, currentDiv);
     }
 };
 

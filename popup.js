@@ -23,14 +23,26 @@ var sessions = {
         var setButtonText = document.createTextNode("Save Session");
         setButton.appendChild(setButtonText);
         doc_insert(setButton);
+
+        var clearButton = document.createElement("BUTTON");
+        clearButton.onclick = this.clear;
+        var clearButtonText = document.createTextNode("Clear All");
+        clearButton.appendChild(clearButtonText);
+        doc_insert(clearButton);
     },
 
     getSessions: function() {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
             for (item in items) {
+                console.log(item);
                 var session = document.createElement("p");
-                session.onclick =  that.openSession;
+                //session.onclick =  that.openSession;
+                
+                session.addEventListener("click", function() {
+                that.openSession(item);
+                });
+                
                 var sessionName = document.createTextNode(item);
                 session.appendChild(sessionName);
                 doc_insert(session);
@@ -75,11 +87,16 @@ var sessions = {
             console.log(items[sessionKey]);
             chrome.windows.create({url: items[sessionKey], focused: true});
         });
+    },
+
+    clear: function() {
+        chrome.storage.sync.clear();
+        document.body.innerHTML = '';
+        sessions.startup();
     }
 };
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    //chrome.storage.sync.clear();
     sessions.startup();
 });

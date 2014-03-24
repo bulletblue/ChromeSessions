@@ -29,27 +29,29 @@ var sessions = {
         var clearButtonText = document.createTextNode("Clear All");
         clearButton.appendChild(clearButtonText);
         doc_insert(clearButton);
+
+        var clearButton = document.createElement("BUTTON");
+        clearButton.onclick = this.getSessions;
+        var clearButtonText = document.createTextNode("Get Sessions");
+        clearButton.appendChild(clearButtonText);
+        doc_insert(clearButton);
     },
 
     getSessions: function() {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
             for (item in items) {
-                console.log(item);
+                console.log(items[item]);
                 var session = document.createElement("p");
-                //session.onclick =  that.openSession;
                 
                 session.addEventListener("click", function() {
-                that.openSession(item);
+                    that.openSession(items[item]);
                 });
                 
                 var sessionName = document.createTextNode(item);
                 session.appendChild(sessionName);
                 doc_insert(session);
             }
-
-            /*Create list of available sessions here. 
-            Each session will click thru to a new window and open all associated tabs.*/
         });
     },
 
@@ -72,7 +74,7 @@ var sessions = {
                 var getLink = document.createElement("p");
                 
                 getLink.addEventListener("click", function() {
-                    that.openSession(sessionKey);
+                    that.openSession(urls);
                 });
                 
                 var getLinkText = document.createTextNode(sessionKey);
@@ -82,11 +84,9 @@ var sessions = {
         });
     },
 
-    openSession: function(sessionKey) {
-        chrome.storage.sync.get(sessionKey.toString(), function(items) {
-            console.log(items[sessionKey]);
-            chrome.windows.create({url: items[sessionKey], focused: true});
-        });
+    openSession: function(urls) {
+        //console.log(urls);
+        chrome.windows.create({url: urls, focused: true});
     },
 
     clear: function() {

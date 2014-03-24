@@ -4,6 +4,14 @@ function doc_insert(el) {
     document.body.insertBefore(el, currentDiv);
 }
 
+function sessionCount(obj){
+    var length = 0;
+    for (i in obj) {
+        length++;
+    }
+    return length;
+}
+
 var sessions = {
 
     startup: function() {
@@ -19,7 +27,7 @@ var sessions = {
 
     getSessions: function()  {
         chrome.storage.sync.get(null, function(items) {
-            console.log(items);
+            console.log(sessionCount(items));
 
             /*Create list of available sessions here. 
             Each session will click thru to a new window and open all associated tabs.*/

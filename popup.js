@@ -4,17 +4,14 @@ function doc_insert(el) {
     document.body.insertBefore(el, currentDiv);
 }
 
-
-var Sessions = {
+var sessions = {
 
     startup: function() {
-        var me = Sessions;
-
         //Display saved sessions on start
-        me.getSessions();
+        this.getSessions();
 
         var setButton = document.createElement("BUTTON");
-        setButton.onclick = me.saveSession;
+        setButton.onclick = this.saveSession;
         var setButtonText = document.createTextNode("Save Session");
         setButton.appendChild(setButtonText);
         doc_insert(setButton);
@@ -23,18 +20,14 @@ var Sessions = {
     getSessions: function()  {
         chrome.storage.sync.get(null, function(items) {
             console.log(items);
-            for (var i = 0; i < items.length; i++) {
-                var newP = document.createElement("p");
-                var someText = document.createTextNode(items[i].sessionKey);
-                newP.appendChild(someText);
-                doc_insert(newP);
-                document.body.insertBefore(newP, currentDiv);
-            }
+
+            /*Create list of available sessions here. 
+            Each session will click thru to a new window and open all associated tabs.*/
         });
     },
 
     saveSession: function() {
-        var me = Sessions;
+        var that = sessions;
 
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
             var urls = [];
@@ -42,11 +35,15 @@ var Sessions = {
                 urls[i] = tabs[i].url;
             }
 
-            sessionKey = Date.now();
+            var sessionKey = Date.now();
+            var sessionObj = {};
+            sessionObj[sessionKey] = urls;
             
-            chrome.storage.sync.set({"urls": urls, "sessionKey": sessionKey}, function() {
+            console.log("session: " + sessionKey + " urls: " + urls.length);
+
+            chrome.storage.sync.set(sessionObj, function() {
                 var getLink = document.createElement("p");
-                getLink.onclick = me.openSession;
+                getLink.onclick = that.openSession;
                 var getLinkText = document.createTextNode(sessionKey);
                 getLink.appendChild(getLinkText);
                 doc_insert(getLink);
@@ -74,5 +71,6 @@ var Sessions = {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  Sessions.startup();
+    //chrome.storage.sync.clear();
+    sessions.startup();
 });

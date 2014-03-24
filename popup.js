@@ -25,9 +25,16 @@ var sessions = {
         doc_insert(setButton);
     },
 
-    getSessions: function()  {
+    getSessions: function() {
+        var that = sessions;
         chrome.storage.sync.get(null, function(items) {
-            console.log(sessionCount(items));
+            for (item in items) {
+                var session = document.createElement("p");
+                session.onclick =  that.openSession;
+                var sessionName = document.createTextNode(item);
+                session.appendChild(sessionName);
+                doc_insert(session);
+            }
 
             /*Create list of available sessions here. 
             Each session will click thru to a new window and open all associated tabs.*/
@@ -51,7 +58,11 @@ var sessions = {
 
             chrome.storage.sync.set(sessionObj, function() {
                 var getLink = document.createElement("p");
-                getLink.onclick = that.openSession;
+                
+                getLink.addEventListener("click", function() {
+                    that.openSession(sessionKey);
+                });
+                
                 var getLinkText = document.createTextNode(sessionKey);
                 getLink.appendChild(getLinkText);
                 doc_insert(getLink);
@@ -59,20 +70,10 @@ var sessions = {
         });
     },
 
-    openSession: function() {
-        chrome.storage.sync.get(null, function(items) {
-            //chrome.windows.create({url: items.urls, focused: true});
-
-            var allLinks = '';
-            for (var i = 0; i < items.urls.length; i++) {
-                allLinks += items.urls[i] + ",";
-            }
-
-            var newP = document.createElement("p");
-            var someText = document.createTextNode(allLinks);
-            newP.appendChild(someText);
-            doc_insert(newP);
-            document.body.insertBefore(newP, currentDiv);
+    openSession: function(sessionKey) {
+        chrome.storage.sync.get(sessionKey.toString(), function(items) {
+            console.log(items[sessionKey]);
+            chrome.windows.create({url: items[sessionKey], focused: true});
         });
     }
 };

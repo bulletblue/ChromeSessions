@@ -40,14 +40,10 @@ var sessions = {
     getSessions: function() {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
-            for (item in items) {
-                console.log(items[item]);
+            for (var item in items) {
+                console.log("invoking getSessions() " + items[item]);
                 var session = document.createElement("p");
-                
-                session.addEventListener("click", function() {
-                    that.openSession(items[item]);
-                });
-                
+                that.makeEventListener(session, items[item]);
                 var sessionName = document.createTextNode(item);
                 session.appendChild(sessionName);
                 doc_insert(session);
@@ -85,8 +81,26 @@ var sessions = {
     },
 
     openSession: function(urls) {
-        console.log(urls);
-        //chrome.windows.create({url: urls, focused: true});
+        //console.log("invoking openSession() " + urls);
+        chrome.tabs.query({"currentWindow": true}, function(tabs) {
+            if (tabs.length === 1 && tabs[0].url === "chrome://newtab/")
+            {
+                console.log("empty window");
+                /*chrome.windows.getCurrent(true, function(window) {
+                    window.create({url: urls, focused: true});
+                });*/
+            }
+            else {
+                console.log("busy window");
+                //chrome.windows.create({url: urls, focused: true});
+            }
+        });
+    },
+
+    makeEventListener: function(session, urls) {
+        session.addEventListener("click", function() {
+            sessions.openSession(urls);
+        });
     },
 
     clear: function() {

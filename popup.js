@@ -85,8 +85,12 @@ var sessions = {
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
             if (tabs.length === 1 && tabs[0].url === "chrome://newtab/")
             {
-                console.log("empty window");
-                //open in current window
+                for (var i = 0; i < urls.length; i++) {
+                    chrome.tabs.create({url: urls[i]});
+                }
+
+                //close empty tab in new window
+                chrome.tabs.remove(tabs[0].id);
             }
             else {
                 chrome.windows.create({url: urls, focused: true});

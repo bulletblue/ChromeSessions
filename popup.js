@@ -86,13 +86,10 @@ var sessions = {
             if (tabs.length === 1 && tabs[0].url === "chrome://newtab/")
             {
                 console.log("empty window");
-                /*chrome.windows.getCurrent(true, function(window) {
-                    window.create({url: urls, focused: true});
-                });*/
+                //open in current window
             }
             else {
-                console.log("busy window");
-                //chrome.windows.create({url: urls, focused: true});
+                chrome.windows.create({url: urls, focused: true});
             }
         });
     },

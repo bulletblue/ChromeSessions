@@ -85,8 +85,8 @@ var sessions = {
     },
 
     openSession: function(urls) {
-        //console.log(urls);
-        chrome.windows.create({url: urls, focused: true});
+        console.log(urls);
+        //chrome.windows.create({url: urls, focused: true});
     },
 
     clear: function() {

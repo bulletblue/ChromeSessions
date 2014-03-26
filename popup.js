@@ -58,10 +58,10 @@ var sessions = {
             saveLock = 1;
             var sessionKey = "";
             
-            var msgEmpty = document.createElement("p");
-            msgEmpty.setAttribute("id", "msg_empty_session");
-            msgEmpty.style.visibility = "hidden";
-            doc_insert(msgEmpty);
+            var msgError = document.createElement("p");
+            msgError.setAttribute("id", "msg_empty_session");
+            msgError.style.visibility = "hidden";
+            doc_insert(msgError);
             
             var sessionInputField = document.createElement("INPUT");
             sessionInputField.setAttribute('autofocus','autofocus');
@@ -71,7 +71,7 @@ var sessions = {
             doc_insert(cancelSaveButton);
             cancelSaveButton.addEventListener("click", function() {
                 saveLock = 0;
-                msgEmpty.remove();
+                msgError.remove();
                 sessionInputField.remove();
                 cancelSaveButton.remove();
             });
@@ -79,18 +79,18 @@ var sessions = {
             sessionInputField.addEventListener("keydown", function(e) {
                 if (e.keyIdentifier == "Enter") {
                     if (sessionInputField.value == "") {
-                        msgEmpty.innerHTML = "Please enter a session name";
-                        msgEmpty.style.visibility = "visible";
+                        msgError.innerHTML = "Please enter a session name";
+                        msgError.style.visibility = "visible";
                     }
                     else if (keyExists(sessionInputField.value)) {
-                        msgEmpty.style.visibility = "visible";
-                        msgEmpty.innerHTML = "Session Exists!";
+                        msgError.style.visibility = "visible";
+                        msgError.innerHTML = "Session Exists!";
                     }
                     else {
                         sessionKey = sessionInputField.value;
                         
                         sessionInputField.remove();
-                        msgEmpty.remove();
+                        msgError.remove();
                         cancelSaveButton.remove();
                     
                         chrome.tabs.query({"currentWindow": true}, function(tabs) {

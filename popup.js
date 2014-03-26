@@ -8,7 +8,8 @@ function doc_insert(el) {
 function keyExists(key) {
     var exists = false;
     console.log("start of func: " + exists);
-    var items = chrome.storage.sync.get(null,null);
+    var items = chrome.storage.sync.get(null,function(items){});
+    console.log(items);
     for (var item in items) {
         if (item == key) {
             exists = true;
@@ -77,14 +78,13 @@ var sessions = {
 
             sessionInputField.addEventListener("keydown", function(e) {
                 if (e.keyIdentifier == "Enter") {
-                                    //console.log(keyExists(sessionInputField.value));
                     if (sessionInputField.value == "") {
+                        msgEmpty.innerHTML = "Please enter a session name";
                         msgEmpty.style.visibility = "visible";
-                        msgEmpty.appendChild(document.createTextNode("Please enter a session name"));
                     }
                     else if (keyExists(sessionInputField.value)) {
                         msgEmpty.style.visibility = "visible";
-                        msgEmpty.appendChild(document.createTextNode("Session Exists!"));
+                        msgEmpty.innerHTML = "Session Exists!";
                     }
                     else {
                         sessionKey = sessionInputField.value;

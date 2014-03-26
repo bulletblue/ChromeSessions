@@ -1,15 +1,22 @@
 var currentDiv = document.getElementById("somediv");
+var saveLock = 0;
 
 function doc_insert(el) {
     document.body.insertBefore(el, currentDiv);
 }
 
-function sessionCount(obj){
-    var length = 0;
-    for (i in obj) {
-        length++;
+function keyExists(key) {
+    var exists = false;
+    console.log("start of func: " + exists);
+    var items = chrome.storage.sync.get(null,null);
+    for (var item in items) {
+        if (item == key) {
+            exists = true;
+            console.log("in conditional: " + exists);
+        }
     }
-    return length;
+    console.log("before return: " + exists);
+    return exists;
 }
 
 var sessions = {
@@ -29,19 +36,12 @@ var sessions = {
         var clearButtonText = document.createTextNode("Clear All");
         clearButton.appendChild(clearButtonText);
         doc_insert(clearButton);
-
-        /*var clearButton = document.createElement("BUTTON");
-        clearButton.onclick = this.getSessions;
-        var clearButtonText = document.createTextNode("Get Sessions");
-        clearButton.appendChild(clearButtonText);
-        doc_insert(clearButton);*/
     },
 
     getSessions: function() {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
             for (var item in items) {
-                console.log("invoking getSessions() " + items[item]);
                 var session = document.createElement("p");
                 that.makeEventListener(session, items[item]);
                 var sessionName = document.createTextNode(item);
@@ -52,36 +52,79 @@ var sessions = {
     },
 
     saveSession: function() {
-        var that = sessions;
-
-        var sessionInputField = document.createElement("INPUT");
-        sessionInputField.setAttribute('autofocus','autofocus');
-        doc_insert(sessionInputField);
-
-        chrome.tabs.query({"currentWindow": true}, function(tabs) {
-            var urls = [];
-            for (var i = 0; i < tabs.length; i++) {
-                urls[i] = tabs[i].url;
-            }
-
-            var sessionKey = Date.now();
-            var sessionObj = {};
-            sessionObj[sessionKey] = urls;
+        if (saveLock == 0) {
+            var that = sessions;
+            saveLock = 1;
+            var sessionKey = "";
             
-            console.log("session: " + sessionKey + " urls: " + urls.length);
+            var msgEmpty = document.createElement("p");
+            msgEmpty.setAttribute("id", "msg_empty_session");
+            msgEmpty.style.visibility = "hidden";
+            doc_insert(msgEmpty);
+            
+            var sessionInputField = document.createElement("INPUT");
+            sessionInputField.setAttribute('autofocus','autofocus');
 
-            chrome.storage.sync.set(sessionObj, function() {
-                var getLink = document.createElement("p");
-                
-                getLink.addEventListener("click", function() {
-                    that.openSession(urls);
-                });
-                
-                var getLinkText = document.createTextNode(sessionKey);
-                getLink.appendChild(getLinkText);
-                doc_insert(getLink);
+            var cancelSaveButton = document.createElement("BUTTON");
+            cancelSaveButton.appendChild(document.createTextNode("Cancel"));
+            doc_insert(cancelSaveButton);
+            cancelSaveButton.addEventListener("click", function() {
+                saveLock = 0;
+                msgEmpty.remove();
+                sessionInputField.remove();
+                cancelSaveButton.remove();
             });
-        });
+
+            sessionInputField.addEventListener("keydown", function(e) {
+                if (e.keyIdentifier == "Enter") {
+                                    //console.log(keyExists(sessionInputField.value));
+                    if (sessionInputField.value == "") {
+                        msgEmpty.style.visibility = "visible";
+                        msgEmpty.appendChild(document.createTextNode("Please enter a session name"));
+                    }
+                    else if (keyExists(sessionInputField.value)) {
+                        msgEmpty.style.visibility = "visible";
+                        msgEmpty.appendChild(document.createTextNode("Session Exists!"));
+                    }
+                    else {
+                        sessionKey = sessionInputField.value;
+                        
+                        sessionInputField.remove();
+                        msgEmpty.remove();
+                        cancelSaveButton.remove();
+                    
+                        chrome.tabs.query({"currentWindow": true}, function(tabs) {
+                            var urls = [];
+                            for (var i = 0; i < tabs.length; i++) {
+                                urls[i] = tabs[i].url;
+                            }
+
+                            var sessionObj = {};
+                            sessionObj[sessionKey] = urls;
+                            chrome.storage.sync.set(sessionObj, function() {
+                                var getLink = document.createElement("p");
+                                
+                                getLink.addEventListener("click", function() {
+                                    that.openSession(urls);
+                                });
+                                
+                                var getLinkText = document.createTextNode(sessionKey);
+                                getLink.appendChild(getLinkText);
+                                doc_insert(getLink);
+                            });
+                        });
+                        saveLock = 0;
+                    }
+                }   
+                else
+                {
+                    msgEmpty.style.visibility = "hidden";
+                }
+            });
+
+
+            doc_insert(sessionInputField);
+        }
     },
 
     openSession: function(urls) {

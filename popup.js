@@ -30,11 +30,11 @@ var sessions = {
         clearButton.appendChild(clearButtonText);
         doc_insert(clearButton);
 
-        var clearButton = document.createElement("BUTTON");
+        /*var clearButton = document.createElement("BUTTON");
         clearButton.onclick = this.getSessions;
         var clearButtonText = document.createTextNode("Get Sessions");
         clearButton.appendChild(clearButtonText);
-        doc_insert(clearButton);
+        doc_insert(clearButton);*/
     },
 
     getSessions: function() {
@@ -53,6 +53,10 @@ var sessions = {
 
     saveSession: function() {
         var that = sessions;
+
+        var sessionInputField = document.createElement("INPUT");
+        sessionInputField.setAttribute('autofocus','autofocus');
+        doc_insert(sessionInputField);
 
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
             var urls = [];

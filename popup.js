@@ -6,18 +6,7 @@ function doc_insert(el) {
 }
 
 function keyExists(key) {
-    var exists = false;
-    console.log("start of func: " + exists);
-    var items = chrome.storage.sync.get(null,function(items){});
-    console.log(items);
-    for (var item in items) {
-        if (item == key) {
-            exists = true;
-            console.log("in conditional: " + exists);
-        }
-    }
-    console.log("before return: " + exists);
-    return exists;
+return true;
 }
 
 var sessions = {
@@ -65,6 +54,8 @@ var sessions = {
             
             var sessionInputField = document.createElement("INPUT");
             sessionInputField.setAttribute('autofocus','autofocus');
+            //sessionInputField.style.visibility = "hidden";
+            doc_insert(sessionInputField);
 
             var cancelSaveButton = document.createElement("BUTTON");
             cancelSaveButton.appendChild(document.createTextNode("Cancel"));
@@ -77,58 +68,65 @@ var sessions = {
             });
 
             sessionInputField.addEventListener("keydown", function(e) {
-                if (e.keyIdentifier == "Enter") {
-                    if (sessionInputField.value == "") {
-                        msgError.innerHTML = "Please enter a session name";
-                        msgError.style.visibility = "visible";
+
+                chrome.storage.sync.get(null, function(items) {
+
+                    var sessions = [];
+                    for (item in items) {
+                        sessions.push(items);
                     }
-                    else if (keyExists(sessionInputField.value)) {
-                        msgError.style.visibility = "visible";
-                        msgError.innerHTML = "Session Exists!";
-                    }
-                    else {
-                        sessionKey = sessionInputField.value;
+
+                    if (e.keyIdentifier == "Enter") {
+                        var exists = items.some(function(i) { return i === sessionInputField.value });
                         
-                        sessionInputField.remove();
-                        msgError.remove();
-                        cancelSaveButton.remove();
-                    
-                        chrome.tabs.query({"currentWindow": true}, function(tabs) {
-                            var urls = [];
-                            for (var i = 0; i < tabs.length; i++) {
-                                urls[i] = tabs[i].url;
-                            }
+                        if (sessionInputField.value == "") {
+                            msgError.innerHTML = "Please enter a session name";
+                            msgError.style.visibility = "visible";
+                        }
+                        else if (sessions.) { 
+                            msgError.innerHTML = "Session already exists";
+                            msgError.style.visibility = "visible";
+                        }
+                        else {
+                            sessionKey = sessionInputField.value;
+                            
+                            sessionInputField.remove();
+                            msgError.remove();
+                            cancelSaveButton.remove();
+                        
+                            chrome.tabs.query({"currentWindow": true}, function(tabs) {
+                                var urls = [];
+                                for (var i = 0; i < tabs.length; i++) {
+                                    urls[i] = tabs[i].url;
+                                }
 
-                            var sessionObj = {};
-                            sessionObj[sessionKey] = urls;
-                            chrome.storage.sync.set(sessionObj, function() {
-                                var getLink = document.createElement("p");
-                                
-                                getLink.addEventListener("click", function() {
-                                    that.openSession(urls);
+                                var sessionObj = {};
+                                sessionObj[sessionKey] = urls;
+                                chrome.storage.sync.set(sessionObj, function() {
+                                    var getLink = document.createElement("p");
+                                    
+                                    getLink.addEventListener("click", function() {
+                                        that.openSession(urls);
+                                    });
+                                    
+                                    var getLinkText = document.createTextNode(sessionKey);
+                                    getLink.appendChild(getLinkText);
+                                    doc_insert(getLink);
                                 });
-                                
-                                var getLinkText = document.createTextNode(sessionKey);
-                                getLink.appendChild(getLinkText);
-                                doc_insert(getLink);
                             });
-                        });
-                        saveLock = 0;
+                            saveLock = 0;
+                        }
+                    }   
+                    else
+                    {
+                        msgError.style.visibility = "hidden";
                     }
-                }   
-                else
-                {
-                    msgEmpty.style.visibility = "hidden";
-                }
+                });
             });
-
-
-            doc_insert(sessionInputField);
         }
     },
 
     openSession: function(urls) {
-        //console.log("invoking openSession() " + urls);
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
             if (tabs.length === 1 && tabs[0].url === "chrome://newtab/")
             {

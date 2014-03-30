@@ -5,8 +5,12 @@ function doc_insert(el) {
     document.body.insertBefore(el, currentDiv);
 }
 
-function keyExists(key) {
-return true;
+function keyExists(key, sessions) {
+    for (var i = 0; i < sessions.length; i++)
+    {
+        if (key === sessions[i]) return true;
+    }
+    return false;
 }
 
 var sessions = {
@@ -73,17 +77,16 @@ var sessions = {
 
                     var sessions = [];
                     for (item in items) {
-                        sessions.push(items);
+                        sessions.push(item);
                     }
 
-                    if (e.keyIdentifier == "Enter") {
-                        var exists = items.some(function(i) { return i === sessionInputField.value });
-                        
-                        if (sessionInputField.value == "") {
+                    if (e.keyIdentifier === "Enter") {
+                        console.log("exists? " + keyExists(sessionInputField.value, sessions));
+                        if (sessionInputField.value === "") {
                             msgError.innerHTML = "Please enter a session name";
                             msgError.style.visibility = "visible";
                         }
-                        else if (sessions.) { 
+                        else if (keyExists(sessionInputField.value, sessions)) { 
                             msgError.innerHTML = "Session already exists";
                             msgError.style.visibility = "visible";
                         }

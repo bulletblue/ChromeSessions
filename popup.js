@@ -28,19 +28,16 @@ function showSaveElements() {
 var sessions = {
 
     startup: function() {
-        //Display saved sessions on start
         this.getSessions();
 
         var saveButton = document.createElement("BUTTON");
+        saveButton.appendChild(document.createTextNode("Save Session"));
         saveButton.onclick = this.saveSession;
-        var saveButtonText = document.createTextNode("Save Session");
-        saveButton.appendChild(saveButtonText);
         doc_insert(saveButton);
 
         var clearButton = document.createElement("BUTTON");
+        clearButton.appendChild(document.createTextNode("Clear All"));
         clearButton.onclick = this.clear;
-        var clearButtonText = document.createTextNode("Clear All");
-        clearButton.appendChild(clearButtonText);
         doc_insert(clearButton);
 
         var msgError = document.createElement("p");
@@ -49,7 +46,7 @@ var sessions = {
 
         var sessionInputField = document.createElement("INPUT");
         sessionInputField.setAttribute("id", "input_session");
-        sessionInputField.setAttribute("autofocus","autofocus");
+        //sessionInputField.setAttribute("autofocus","autofocus");
         doc_insert(sessionInputField);
 
         var cancelSaveButton = document.createElement("BUTTON");
@@ -60,8 +57,6 @@ var sessions = {
             hideSaveElements();
         });
         doc_insert(cancelSaveButton)
-
-        console.log("created all elements");
 
         hideSaveElements();
     },
@@ -80,18 +75,20 @@ var sessions = {
     },
 
     saveSession: function() {
-        if (saveLock == 0) {
+        if (saveLock === 0) {
             var that = sessions;
             saveLock = 1;
-            var sessionKey = "";
+            var sessionKey = ""; //user provided name will be key in session object
 
             showSaveElements();
 
             var msgError = document.getElementById("msg_empty");
             var sessionInputField = document.getElementById("input_session");
-            var cancelSaveButton = document.getElementById("btn_cancel");               
+            sessionInputField.focus();
+            var cancelSaveButton = document.getElementById("btn_cancel");    
 
             sessionInputField.addEventListener("keydown", function(e) {
+
                 chrome.storage.sync.get(null, function(items) {
 
                     var sessions = [];
@@ -144,21 +141,18 @@ var sessions = {
             });
         }
         else {
-            document.getElementById("msg_empty_session").style.visibility = "hidden";
+            document.getElementById("msg_empty").style.visibility = "hidden";
             document.getElementById("input_session").focus(); 
         }
     },
 
     openSession: function(urls) {
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
-            if (tabs.length === 1 && tabs[0].url === "chrome://newtab/")
-            {
+            if (tabs.length === 1 && tabs[0].url === "chrome://newtab/") {
                 for (var i = 0; i < urls.length; i++) {
                     chrome.tabs.create({url: urls[i]});
                 }
-
-                //close empty tab in new window
-                chrome.tabs.remove(tabs[0].id);
+                chrome.tabs.remove(tabs[0].id);  //close empty tab in new window
             }
             else {
                 chrome.windows.create({url: urls, focused: true});

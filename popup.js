@@ -1,8 +1,10 @@
-var currentDiv = document.getElementById("somediv");
+var top_div = document.getElementById("top_div");
+var sessions_table = document.getElementById("sessions_table");
+
 var saveLock = 0;
 
 function doc_insert(el) {
-    document.body.insertBefore(el, currentDiv);
+    document.body.insertBefore(el, top_div);
 }
 
 function keyExists(key, sessions) {
@@ -46,7 +48,6 @@ var sessions = {
 
         var sessionInputField = document.createElement("INPUT");
         sessionInputField.setAttribute("id", "input_session");
-        //sessionInputField.setAttribute("autofocus","autofocus");
         doc_insert(sessionInputField);
 
         var cancelSaveButton = document.createElement("BUTTON");
@@ -56,7 +57,7 @@ var sessions = {
             saveLock = 0;
             hideSaveElements();
         });
-        doc_insert(cancelSaveButton)
+        doc_insert(cancelSaveButton);
 
         hideSaveElements();
     },
@@ -65,10 +66,10 @@ var sessions = {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
             for (var item in items) {
+
                 var session = document.createElement("p");
+                session.appendChild(document.createTextNode(item));
                 that.makeEventListener(session, items[item]);
-                var sessionName = document.createTextNode(item);
-                session.appendChild(sessionName);
                 doc_insert(session);
             }
         });
@@ -108,6 +109,7 @@ var sessions = {
                         else {
                             sessionKey = sessionInputField.value;
                             
+                            sessionInputField.value = "";
                             hideSaveElements();
                         
                             chrome.tabs.query({"currentWindow": true}, function(tabs) {
@@ -118,6 +120,7 @@ var sessions = {
 
                                 var sessionObj = {};
                                 sessionObj[sessionKey] = urls;
+
                                 chrome.storage.sync.set(sessionObj, function() {
                                     var getLink = document.createElement("p");
                                     

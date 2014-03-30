@@ -13,23 +13,57 @@ function keyExists(key, sessions) {
     return false;
 }
 
+function hideSaveElements() {
+    document.getElementById("msg_empty").style.visibility = "hidden";
+    document.getElementById("input_session").style.visibility = "hidden";
+    document.getElementById("btn_cancel").style.visibility = "hidden"; 
+}
+
+function showSaveElements() {
+    document.getElementById("msg_empty").style.visibility = "visible";
+    document.getElementById("input_session").style.visibility = "visible";
+    document.getElementById("btn_cancel").style.visibility = "visible"; 
+}
+
 var sessions = {
 
     startup: function() {
         //Display saved sessions on start
         this.getSessions();
 
-        var setButton = document.createElement("BUTTON");
-        setButton.onclick = this.saveSession;
-        var setButtonText = document.createTextNode("Save Session");
-        setButton.appendChild(setButtonText);
-        doc_insert(setButton);
+        var saveButton = document.createElement("BUTTON");
+        saveButton.onclick = this.saveSession;
+        var saveButtonText = document.createTextNode("Save Session");
+        saveButton.appendChild(saveButtonText);
+        doc_insert(saveButton);
 
         var clearButton = document.createElement("BUTTON");
         clearButton.onclick = this.clear;
         var clearButtonText = document.createTextNode("Clear All");
         clearButton.appendChild(clearButtonText);
         doc_insert(clearButton);
+
+        var msgError = document.createElement("p");
+        msgError.setAttribute("id", "msg_empty");
+        doc_insert(msgError);
+
+        var sessionInputField = document.createElement("INPUT");
+        sessionInputField.setAttribute("id", "input_session");
+        sessionInputField.setAttribute("autofocus","autofocus");
+        doc_insert(sessionInputField);
+
+        var cancelSaveButton = document.createElement("BUTTON");
+        cancelSaveButton.setAttribute("id", "btn_cancel");
+        cancelSaveButton.appendChild(document.createTextNode("Cancel"));;
+        cancelSaveButton.addEventListener("click", function() {
+            saveLock = 0;
+            hideSaveElements();
+        });
+        doc_insert(cancelSaveButton)
+
+        console.log("created all elements");
+
+        hideSaveElements();
     },
 
     getSessions: function() {
@@ -50,29 +84,14 @@ var sessions = {
             var that = sessions;
             saveLock = 1;
             var sessionKey = "";
-            
-            var msgError = document.createElement("p");
-            msgError.setAttribute("id", "msg_empty_session");
-            msgError.style.visibility = "hidden";
-            doc_insert(msgError);
-            
-            var sessionInputField = document.createElement("INPUT");
-            sessionInputField.setAttribute('autofocus','autofocus');
-            //sessionInputField.style.visibility = "hidden";
-            doc_insert(sessionInputField);
 
-            var cancelSaveButton = document.createElement("BUTTON");
-            cancelSaveButton.appendChild(document.createTextNode("Cancel"));
-            doc_insert(cancelSaveButton);
-            cancelSaveButton.addEventListener("click", function() {
-                saveLock = 0;
-                msgError.remove();
-                sessionInputField.remove();
-                cancelSaveButton.remove();
-            });
+            showSaveElements();
+
+            var msgError = document.getElementById("msg_empty");
+            var sessionInputField = document.getElementById("input_session");
+            var cancelSaveButton = document.getElementById("btn_cancel");               
 
             sessionInputField.addEventListener("keydown", function(e) {
-
                 chrome.storage.sync.get(null, function(items) {
 
                     var sessions = [];
@@ -81,7 +100,6 @@ var sessions = {
                     }
 
                     if (e.keyIdentifier === "Enter") {
-                        console.log("exists? " + keyExists(sessionInputField.value, sessions));
                         if (sessionInputField.value === "") {
                             msgError.innerHTML = "Please enter a session name";
                             msgError.style.visibility = "visible";
@@ -93,9 +111,7 @@ var sessions = {
                         else {
                             sessionKey = sessionInputField.value;
                             
-                            sessionInputField.remove();
-                            msgError.remove();
-                            cancelSaveButton.remove();
+                            hideSaveElements();
                         
                             chrome.tabs.query({"currentWindow": true}, function(tabs) {
                                 var urls = [];
@@ -126,6 +142,10 @@ var sessions = {
                     }
                 });
             });
+        }
+        else {
+            document.getElementById("msg_empty_session").style.visibility = "hidden";
+            document.getElementById("input_session").focus(); 
         }
     },
 

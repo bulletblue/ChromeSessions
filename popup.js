@@ -1,5 +1,4 @@
 var top_div = document.getElementById("top_div");
-var sessions_table = document.getElementById("sessions_table");
 
 var saveLock = 0;
 
@@ -16,48 +15,34 @@ function keyExists(key, sessions) {
 }
 
 function hideSaveElements() {
-    document.getElementById("msg_empty").style.visibility = "hidden";
+    document.getElementById("msg_alert").style.visibility = "hidden";
     document.getElementById("input_session").style.visibility = "hidden";
-    document.getElementById("btn_cancel").style.visibility = "hidden"; 
+    document.getElementById("btn_cancelSave").style.visibility = "hidden"; 
 }
 
 function showSaveElements() {
-    document.getElementById("msg_empty").style.visibility = "visible";
+    document.getElementById("msg_alert").style.visibility = "visible";
     document.getElementById("input_session").style.visibility = "visible";
-    document.getElementById("btn_cancel").style.visibility = "visible"; 
+    document.getElementById("btn_cancelSave").style.visibility = "visible"; 
 }
 
 var sessions = {
 
     startup: function() {
         this.getSessions();
-
-        var saveButton = document.createElement("BUTTON");
-        saveButton.appendChild(document.createTextNode("Save Session"));
+        
+        var saveButton = document.getElementById("btn_save");
         saveButton.onclick = this.saveSession;
-        doc_insert(saveButton);
 
-        var clearButton = document.createElement("BUTTON");
-        clearButton.appendChild(document.createTextNode("Clear All"));
+        var clearButton = document.getElementById("btn_clear");
         clearButton.onclick = this.clear;
-        doc_insert(clearButton);
 
-        var msgError = document.createElement("p");
-        msgError.setAttribute("id", "msg_empty");
-        doc_insert(msgError);
-
-        var sessionInputField = document.createElement("INPUT");
-        sessionInputField.setAttribute("id", "input_session");
-        doc_insert(sessionInputField);
-
-        var cancelSaveButton = document.createElement("BUTTON");
-        cancelSaveButton.setAttribute("id", "btn_cancel");
-        cancelSaveButton.appendChild(document.createTextNode("Cancel"));;
+        var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.addEventListener("click", function() {
             saveLock = 0;
+            document.getElementById('msg_alert').innerHTML = "Enter a session name";
             hideSaveElements();
         });
-        doc_insert(cancelSaveButton);
 
         hideSaveElements();
     },
@@ -70,7 +55,11 @@ var sessions = {
                 var session = document.createElement("p");
                 session.appendChild(document.createTextNode(item));
                 that.makeEventListener(session, items[item]);
-                doc_insert(session);
+
+                var table = document.getElementById("sessions_table");
+                var row = table.insertRow(0);
+                var cell = row.insertCell(0);
+                cell.appendChild(session);
             }
         });
     },
@@ -83,10 +72,10 @@ var sessions = {
 
             showSaveElements();
 
-            var msgError = document.getElementById("msg_empty");
+            var msgAlert = document.getElementById("msg_alert");
             var sessionInputField = document.getElementById("input_session");
             sessionInputField.focus();
-            var cancelSaveButton = document.getElementById("btn_cancel");    
+            var cancelSaveButton = document.getElementById("btn_cancelSave");    
 
             sessionInputField.addEventListener("keydown", function(e) {
 
@@ -100,15 +89,15 @@ var sessions = {
                     if (e.keyIdentifier === "Enter") {
 
                         if (sessionInputField.value === "") {
-                            msgError.innerHTML = "Please enter a session name";
-                            msgError.style.visibility = "visible";
+                            msgAlert.innerHTML = "Please enter a session name";
+                            msgAlert.style.visibility = "visible";
                         }
                         else if (keyExists(sessionInputField.value, sessions)) { 
-                            msgError.innerHTML = "Session already exists";
-                            msgError.style.visibility = "visible";
+                            msgAlert.innerHTML = "Session already exists";
+                            msgAlert.style.visibility = "visible";
                         }
                         else {
-                            msgError.style.visibility = "hidden";
+                            msgAlert.style.visibility = "hidden";
                             sessionKey = sessionInputField.value;
                             
                             sessionInputField.value = "";
@@ -124,15 +113,14 @@ var sessions = {
                                 sessionObj[sessionKey] = urls;
 
                                 chrome.storage.sync.set(sessionObj, function() {
-                                    var getLink = document.createElement("p");
-                                    
-                                    getLink.addEventListener("click", function() {
-                                        that.openSession(urls);
-                                    });
-                                    
-                                    var getLinkText = document.createTextNode(sessionKey);
-                                    getLink.appendChild(getLinkText);
-                                    doc_insert(getLink);
+                                    var newSession = document.createElement("p");
+                                    newSession.appendChild(document.createTextNode(sessionKey));
+                                    that.makeEventListener(newSession, urls);
+
+                                    var table = document.getElementById("sessions_table");
+                                    var row = table.insertRow(0);
+                                    var cell = row.insertCell(0);
+                                    cell.appendChild(newSession);
                                 });
                             });
                             saveLock = 0;
@@ -140,15 +128,15 @@ var sessions = {
                     }   
                     else
                     {
-                        msgError.style.visibility = "hidden";
+                        msgAlert.style.visibility = "hidden";
                     }
                 });
             });
         }
         else {
             document.getElementById("msg_empty").style.visibility = "hidden";
-            document.getElementById("input_session").focus();
-            document.getElementById("input_session").select(); 
+            var input = document.getElementById("input_session").focus();
+            input.select(); 
         }
     },
 
@@ -173,9 +161,11 @@ var sessions = {
     },
 
     clear: function() {
+        var table = document.getElementById("sessions_table");
         chrome.storage.sync.clear();
-        document.body.innerHTML = '';
-        sessions.startup();
+        for (var i = 0; i < table.rows.length; i++) {
+            table.deleteRow(i);
+        }
     }
 };
 

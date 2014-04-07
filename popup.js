@@ -98,6 +98,7 @@ var sessions = {
                     }
 
                     if (e.keyIdentifier === "Enter") {
+
                         if (sessionInputField.value === "") {
                             msgError.innerHTML = "Please enter a session name";
                             msgError.style.visibility = "visible";
@@ -107,6 +108,7 @@ var sessions = {
                             msgError.style.visibility = "visible";
                         }
                         else {
+                            msgError.style.visibility = "hidden";
                             sessionKey = sessionInputField.value;
                             
                             sessionInputField.value = "";
@@ -145,7 +147,8 @@ var sessions = {
         }
         else {
             document.getElementById("msg_empty").style.visibility = "hidden";
-            document.getElementById("input_session").focus(); 
+            document.getElementById("input_session").focus();
+            document.getElementById("input_session").select(); 
         }
     },
 

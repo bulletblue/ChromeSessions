@@ -3,3 +3,8 @@ body {
     min-width: 200px;
     min-height: 100px;
 }
+
+table {
+    border: 1px solid red;
+    border-collapse: collapse;
+}

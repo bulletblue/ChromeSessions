@@ -1,10 +1,4 @@
-var top_div = document.getElementById("top_div");
-
 var saveLock = 0;
-
-function doc_insert(el) {
-    document.body.insertBefore(el, top_div);
-}
 
 function keyExists(key, sessions) {
     for (var i = 0; i < sessions.length; i++)
@@ -97,9 +91,7 @@ var sessions = {
                             msgAlert.style.visibility = "visible";
                         }
                         else {
-                            msgAlert.style.visibility = "hidden";
                             sessionKey = sessionInputField.value;
-                            
                             sessionInputField.value = "";
                             hideSaveElements();
                         
@@ -162,6 +154,7 @@ var sessions = {
 
     clear: function() {
         var table = document.getElementById("sessions_table");
+        console.log(table.rows.length);
         chrome.storage.sync.clear();
         for (var i = 0; i < table.rows.length; i++) {
             table.deleteRow(i);

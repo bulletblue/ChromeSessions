@@ -1,10 +1,38 @@
 body {
     background-color:#FFFFFF;
-    min-width: 200px;
-    min-height: 100px;
+    width:200px;
+    max-width:200px;
+    height: 340px;
+    max-height: 340px;
+}
+
+#container {
+    min-height: 100%;
+    position: relative;
+}
+
+#input_elements {
+    padding-top: 200px;
+    padding-bottom: 0px;
+}
+
+#alert {
+    padding-top: 0px;
 }
 
 table {
-    border: 1px solid red;
+    border: 1px dotted red;
     border-collapse: collapse;
+    padding: 0px;
+}
+
+tr:hover {
+    background-color: #6495ED;
+    color: white;
+}
+
+/* When a session is clicked */
+tr:active {
+    background-color: #CD3700;
+    color: white;
 }

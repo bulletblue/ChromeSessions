@@ -1,9 +1,63 @@
 body {
     background-color:#FFFFFF;
-    width:200px;
-    max-width:200px;
-    height: 340px;
-    max-height: 340px;
+    width:250px;
+    /*height: 1000px;*/
+    padding: 0px;
+    margin: 0px;
+}
+
+#top_buttons {
+    padding-bottom: 15px;
+}
+
+/*remove default focus on extension*/
+#btn_save:focus, #btn_clear:focus, #btn_cancelSave:focus {
+    outline: 0;
+}
+
+#btn_save, #btn_clear, #btn_cancelSave {
+    position: relative;
+    vertical-align: top;
+    width: 75%;
+    height: 30px;
+    padding: 0px;
+    margin: 0px
+    font-size: 10px;
+    color:#454545; /* font color */
+    text-align: center;
+    background: #FFFFFF;
+    border: 0px;
+    cursor: pointer;
+}
+
+#btn_clear, #btn_cancelSave {
+    width: 25%;
+}
+
+#btn_cancelSave {
+    height: 20px;
+}
+
+#input_elements {
+    margin: 0px;
+    padding-top: 5px;
+    padding-bottom: 1px;
+}
+
+#input_session {
+    padding-top: 2px;
+    margin: 0px;
+    width: 72%;
+}
+
+#input_session:focus {
+    background-color: #FFFF7F;
+    outline: 0;
+}
+
+#btn_save:hover, #btn_clear:hover, #btn_cancelSave:hover {
+    background-color: #6495DC;
+    color: white;
 }
 
 #container {
@@ -11,28 +65,26 @@ body {
     position: relative;
 }
 
-#input_elements {
-    padding-top: 200px;
-    padding-bottom: 0px;
-}
-
-#alert {
-    padding-top: 0px;
+#msg_alert {
+    text-align:center;
+    padding-top: 5px;
+    margin: 0px;
 }
 
 table {
-    border: 1px dotted red;
+    width: 95%;
+    border: 1px dotted #6495DC;
     border-collapse: collapse;
+    margin: auto;
     padding: 0px;
 }
 
-tr:hover {
-    background-color: #6495ED;
-    color: white;
+table p {
+    padding: 0px;
+    margin: 0px;
 }
 
-/* When a session is clicked */
-tr:active {
-    background-color: #CD3700;
+tr:hover {
+    background-color: #6495DC;
     color: white;
 }

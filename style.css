@@ -1,7 +1,6 @@
 body {
     background-color:#FFFFFF;
     width:250px;
-    /*height: 1000px;*/
     padding: 0px;
     margin: 0px;
 }
@@ -21,7 +20,7 @@ body {
     width: 75%;
     height: 30px;
     padding: 0px;
-    margin: 0px
+    margin: 0px;
     font-size: 10px;
     color:#454545; /* font color */
     text-align: center;
@@ -55,9 +54,14 @@ body {
     outline: 0;
 }
 
-#btn_save:hover, #btn_clear:hover, #btn_cancelSave:hover {
+#btn_save:hover {
     background-color: #6495DC;
     color: white;
+}
+
+#btn_clear:hover, #btn_cancelSave:hover {
+    background-color: #C13232;
+    color:white;
 }
 
 #container {
@@ -72,7 +76,7 @@ body {
 }
 
 table {
-    width: 95%;
+    width: 80%;
     border: 1px dotted #6495DC;
     border-collapse: collapse;
     margin: auto;
@@ -80,7 +84,7 @@ table {
 }
 
 table p {
-    padding: 0px;
+    padding-left: 1px;
     margin: 0px;
 }
 

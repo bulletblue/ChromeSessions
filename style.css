@@ -1,10 +1,12 @@
 body {
     background-color:#FFFFFF;
+    font: -webkit-small-control;
     width:250px;
     padding: 0px;
     margin: 0px;
 }
 
+/* ------------ BUTTONS ------------ */ 
 #top_buttons {
     padding-bottom: 15px;
 }
@@ -21,16 +23,16 @@ body {
     height: 30px;
     padding: 0px;
     margin: 0px;
-    font-size: 10px;
     color:#454545; /* font color */
     text-align: center;
-    background: #FFFFFF;
+    background: #EFF4FB;
     border: 0px;
     cursor: pointer;
 }
 
 #btn_clear, #btn_cancelSave {
     width: 25%;
+    border-left: 1px solid white;
 }
 
 #btn_cancelSave {
@@ -44,13 +46,14 @@ body {
 }
 
 #input_session {
+    background-color: #FFFFFF;
     padding-top: 2px;
     margin: 0px;
     width: 72%;
 }
 
 #input_session:focus {
-    background-color: #FFFF7F;
+    background-color: #FFFFCB;
     outline: 0;
 }
 
@@ -69,23 +72,57 @@ body {
     position: relative;
 }
 
+
+
+/* ------------ ALERT ------------ */ 
 #msg_alert {
     text-align:center;
     padding-top: 5px;
     margin: 0px;
+    font-style: italic;
+    font-size: 10px;
+    color: #696969;
 }
 
+
+
+/* ------------ TABLE ------------ */ 
 table {
     width: 80%;
-    border: 1px dotted #6495DC;
-    border-collapse: collapse;
+    border: 2px dotted #EFF4FB;
     margin: auto;
     padding: 0px;
 }
 
-table p {
-    padding-left: 1px;
+table p { 
+    font-size: 12px;
     margin: 0px;
+    cursor: pointer;
+}
+
+tbody {
+    height: 87px;
+    overflow: auto;
+    display: block;
+}
+
+tbody::-webkit-scrollbar-track
+{
+    background-color: #FFFFFF;
+}
+
+tbody::-webkit-scrollbar
+{
+    width: 6px;
+}
+
+tbody::-webkit-scrollbar-thumb
+{
+    background-color: #EFF4FB;
+}
+
+tr {
+    background-color: yellow;
 }
 
 tr:hover {

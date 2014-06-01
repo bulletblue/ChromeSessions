@@ -87,11 +87,18 @@ body {
 
 
 /* ------------ TABLE ------------ */ 
-table {
+#table_container {
     width: 80%;
+    height: 87px;
     border: 2px dotted #EFF4FB;
     margin: auto;
+    overflow: auto;
     padding: 0px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
 }
 
 table p { 
@@ -100,29 +107,23 @@ table p {
     cursor: pointer;
 }
 
-tbody {
-    height: 87px;
-    overflow: auto;
-    display: block;
-}
-
-tbody::-webkit-scrollbar-track
+#table_container::-webkit-scrollbar-track
 {
     background-color: #FFFFFF;
 }
 
-tbody::-webkit-scrollbar
+#table_container::-webkit-scrollbar
 {
     width: 6px;
 }
 
-tbody::-webkit-scrollbar-thumb
+#table_container::-webkit-scrollbar-thumb
 {
     background-color: #EFF4FB;
 }
 
-tr {
-    background-color: yellow;
+tr:nth-child(odd) {
+    background-color: #FAFBFD;
 }
 
 tr:hover {

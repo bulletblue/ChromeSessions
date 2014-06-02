@@ -29,7 +29,7 @@ var sessions = {
         saveButton.onclick = this.saveSession;
 
         var clearButton = document.getElementById("btn_clear");
-        clearButton.onclick = this.clear;
+        clearButton.onclick = this.deleteAll;
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.addEventListener("click", function() {
@@ -49,16 +49,17 @@ var sessions = {
                 var session = document.createElement("p");
                 session.setAttribute("class", "session_cell");
                 session.appendChild(document.createTextNode(item));
-                that.openSessionEV(session, items[item]);
 
                 var iconRemove = document.createElement("p");
                 iconRemove.setAttribute("class", "remove_session");
                 iconRemove.appendChild(document.createTextNode("Rm"));
-                that.removeSessionEV(iconRemove, item);
 
                 var table = document.getElementById("sessions_table");
                 var row = table.insertRow(0);
 
+                that.openSessionEV(session, items[item]);
+                that.removeSessionEV(iconRemove, item);
+                
                 var cellSession = row.insertCell(0);
                 cellSession.width = "100%";
                 cellSession.appendChild(session);
@@ -143,6 +144,12 @@ var sessions = {
         }
     },
 
+    openSessionEV: function(session, urls) {
+        session.addEventListener("click", function() {
+            sessions.openSession(urls);
+        });
+    },
+
     openSession: function(urls) {
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
             if (tabs.length === 1 && tabs[0].url === "chrome://newtab/") {
@@ -157,25 +164,25 @@ var sessions = {
         });
     },
 
-    openSessionEV: function(session, urls) {
-        session.addEventListener("click", function() {
-            sessions.openSession(urls);
-        });
-    },
-
     removeSessionEV: function(iconRemove, item) {
         iconRemove.addEventListener("click", function() {
-            console.log(item);
+            //sessions.removeSession(item);
+            console.log("removing " + item);
         });
     },
 
-    clear: function() {
+    removeSession: function(sessionKey, row) {
+        chrome.storage.sync.remove(sessionKey, function() {
+            var table = document.getElementById("sessions_table");
+            table.deleteRow(row);
+        });
+    },
+
+    deleteAll: function() {
         var table = document.getElementById("sessions_table");
-        console.log(table.rows.length);
         chrome.storage.sync.clear();
-        for (var i = 0; i < table.rows.length; i++) {
-            table.deleteRow(i);
-        }
+        var new_tBody = document.createElement('tbody');
+        table.replaceChild(new_tBody, table.firstChild);
     }
 };
 

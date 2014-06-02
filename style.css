@@ -11,9 +11,8 @@ body {
     padding-bottom: 15px;
 }
 
-/*remove default focus on extension*/
 #btn_save:focus, #btn_clear:focus, #btn_cancelSave:focus {
-    outline: 0;
+    outline: 0; /* Don't focus elements on load */
 }
 
 #btn_save, #btn_clear, #btn_cancelSave {

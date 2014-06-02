@@ -84,8 +84,6 @@ body {
     color: #696969;
 }
 
-
-
 /* ------------ TABLE ------------ */ 
 #table_container {
     width: 80%;
@@ -126,7 +124,16 @@ tr:nth-child(odd) {
     background-color: #FAFBFD;
 }
 
-tr:hover {
+.session_cell:hover {
     background-color: #6495DC;
     color: white;
+}
+
+.remove_session {
+    margin: 0px;
+    padding: 0px;
+}
+.remove_session:hover {
+    background-color: #C13232;
+    color:white;
 }

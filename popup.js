@@ -47,13 +47,24 @@ var sessions = {
             for (var item in items) {
 
                 var session = document.createElement("p");
+                session.setAttribute("class", "session_cell");
                 session.appendChild(document.createTextNode(item));
-                that.makeEventListener(session, items[item]);
+                that.openSessionEV(session, items[item]);
+
+                var iconRemove = document.createElement("p");
+                iconRemove.setAttribute("class", "remove_session");
+                iconRemove.appendChild(document.createTextNode("Rm"));
+                that.removeSessionEV(iconRemove, item);
 
                 var table = document.getElementById("sessions_table");
                 var row = table.insertRow(0);
-                var cell = row.insertCell(0);
-                cell.appendChild(session);
+
+                var cellSession = row.insertCell(0);
+                cellSession.width = "100%";
+                cellSession.appendChild(session);
+
+                var cellRemove = row.insertCell(1);
+                cellRemove.appendChild(iconRemove);
             }
         });
     },
@@ -107,7 +118,7 @@ var sessions = {
                                 chrome.storage.sync.set(sessionObj, function() {
                                     var newSession = document.createElement("p");
                                     newSession.appendChild(document.createTextNode(sessionKey));
-                                    that.makeEventListener(newSession, urls);
+                                    that.openSessionEV(newSession, urls);
 
                                     var table = document.getElementById("sessions_table");
                                     var row = table.insertRow(0);
@@ -146,9 +157,15 @@ var sessions = {
         });
     },
 
-    makeEventListener: function(session, urls) {
+    openSessionEV: function(session, urls) {
         session.addEventListener("click", function() {
             sessions.openSession(urls);
+        });
+    },
+
+    removeSessionEV: function(iconRemove, item) {
+        iconRemove.addEventListener("click", function() {
+            console.log(item);
         });
     },
 

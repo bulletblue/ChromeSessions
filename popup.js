@@ -44,6 +44,7 @@ var sessions = {
     getSessions: function() {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
+            console.log(Object.keys(items).length);
             for (var item in items) {
 
                 var session = document.createElement("p");
@@ -118,13 +119,25 @@ var sessions = {
 
                                 chrome.storage.sync.set(sessionObj, function() {
                                     var newSession = document.createElement("p");
+                                    newSession.setAttribute("class", "session_cell");
                                     newSession.appendChild(document.createTextNode(sessionKey));
-                                    that.openSessionEV(newSession, urls);
+
+                                    var iconRemove = document.createElement("p");
+                                    iconRemove.setAttribute("class", "remove_session");
+                                    iconRemove.appendChild(document.createTextNode("Rm"));
 
                                     var table = document.getElementById("sessions_table");
                                     var row = table.insertRow(0);
-                                    var cell = row.insertCell(0);
-                                    cell.appendChild(newSession);
+
+                                    that.openSessionEV(newSession, urls);
+                                    that.removeSessionEV(iconRemove, sessionKey);
+
+                                    var cellSession = row.insertCell(0);
+                                    cellSession.width = "100%";
+                                    cellSession.appendChild(newSession);
+
+                                    var cellRemove = row.insertCell(1);
+                                    cellRemove.appendChild(iconRemove);
                                 });
                             });
                             saveLock = 0;
@@ -166,8 +179,13 @@ var sessions = {
 
     removeSessionEV: function(iconRemove, item) {
         iconRemove.addEventListener("click", function() {
-            //sessions.removeSession(item);
-            console.log("removing " + item);
+            var rows = document.getElementById("sessions_table").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            
+            for (i = 0; i < rows.length; i++) {
+                rows[i].onclick = function() {
+                    sessions.removeSession(item, this.rowIndex);
+                }
+            }
         });
     },
 

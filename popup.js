@@ -14,7 +14,7 @@ function hideSaveElements() {
     document.getElementById("btn_cancelSave").style.visibility = "hidden"; 
 }
 
-function showSaveElements() {
+function showSaveElements() {  
     document.getElementById("msg_alert").style.visibility = "visible";
     document.getElementById("input_session").style.visibility = "visible";
     document.getElementById("btn_cancelSave").style.visibility = "visible"; 
@@ -28,15 +28,11 @@ var sessions = {
         var saveButton = document.getElementById("btn_save");
         saveButton.onclick = this.saveSession;
 
-        var clearButton = document.getElementById("btn_clear");
-        clearButton.onclick = this.deleteAll;
+        var deleteButton = document.getElementById("btn_clear");
+        deleteButton.onclick = this.deleteAll;
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
-        cancelSaveButton.addEventListener("click", function() {
-            saveLock = 0;
-            document.getElementById('msg_alert').innerHTML = "Enter a session name";
-            hideSaveElements();
-        });
+        cancelSaveButton.onclick = this.cancelSave;
 
         hideSaveElements();
     },
@@ -44,7 +40,6 @@ var sessions = {
     getSessions: function() {
         var that = sessions;
         chrome.storage.sync.get(null, function(items) {
-            console.log(Object.keys(items).length);
             for (var item in items) {
 
                 var session = document.createElement("p");
@@ -81,11 +76,11 @@ var sessions = {
 
             var msgAlert = document.getElementById("msg_alert");
             var sessionInputField = document.getElementById("input_session");
+            var cancelSaveButton = document.getElementById("btn_cancelSave");
             sessionInputField.focus();
-            var cancelSaveButton = document.getElementById("btn_cancelSave");    
 
             sessionInputField.addEventListener("keydown", function(e) {
-
+                console.log(e.keyIdentifier);
                 chrome.storage.sync.get(null, function(items) {
 
                     var sessions = [];
@@ -96,6 +91,7 @@ var sessions = {
                     if (e.keyIdentifier === "Enter") {
 
                         if (sessionInputField.value === "") {
+                            console.log("value is empty");
                             msgAlert.innerHTML = "Please enter a session name";
                             msgAlert.style.visibility = "visible";
                         }
@@ -104,6 +100,7 @@ var sessions = {
                             msgAlert.style.visibility = "visible";
                         }
                         else {
+                            console.log("saving session");
                             sessionKey = sessionInputField.value;
                             sessionInputField.value = "";
                             hideSaveElements();
@@ -147,6 +144,7 @@ var sessions = {
                     {
                         msgAlert.style.visibility = "hidden";
                     }
+
                 });
             });
         }
@@ -194,6 +192,12 @@ var sessions = {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);
         });
+    },
+
+    cancelSave: function() {
+        saveLock = 0;
+        document.getElementById('msg_alert').innerHTML = "Enter a session name";
+        hideSaveElements();
     },
 
     deleteAll: function() {

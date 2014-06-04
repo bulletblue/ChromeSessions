@@ -61,6 +61,11 @@ body {
     color: white;
 }
 
+#btn_save:disabled {
+    background-color: gray;
+    color: black;
+}
+
 #btn_clear:hover, #btn_cancelSave:hover {
     background-color: #C13232;
     color:white;

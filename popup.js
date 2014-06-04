@@ -79,7 +79,7 @@ var sessions = {
             var cancelSaveButton = document.getElementById("btn_cancelSave");
             sessionInputField.focus();
 
-            sessionInputField.addEventListener("keydown", function(e) {
+            sessionInputField.addEventListener("keydown", function func(e) {
                 console.log(e.keyIdentifier);
                 chrome.storage.sync.get(null, function(items) {
 
@@ -91,7 +91,6 @@ var sessions = {
                     if (e.keyIdentifier === "Enter") {
 
                         if (sessionInputField.value === "") {
-                            console.log("value is empty");
                             msgAlert.innerHTML = "Please enter a session name";
                             msgAlert.style.visibility = "visible";
                         }
@@ -100,7 +99,6 @@ var sessions = {
                             msgAlert.style.visibility = "visible";
                         }
                         else {
-                            console.log("saving session");
                             sessionKey = sessionInputField.value;
                             sessionInputField.value = "";
                             hideSaveElements();
@@ -137,6 +135,7 @@ var sessions = {
                                     cellRemove.appendChild(iconRemove);
                                 });
                             });
+                            sessionInputField.removeEventListener("keydown", func);
                             saveLock = 0;
                         }
                     }   
@@ -144,7 +143,6 @@ var sessions = {
                     {
                         msgAlert.style.visibility = "hidden";
                     }
-
                 });
             });
         }
@@ -197,6 +195,8 @@ var sessions = {
     cancelSave: function() {
         saveLock = 0;
         document.getElementById('msg_alert').innerHTML = "Enter a session name";
+        document.getElementById('input_session').removeEventListener("keydown", "func");
+        document.getElementById('input_session').value = "";
         hideSaveElements();
     },
 

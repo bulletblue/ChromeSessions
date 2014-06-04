@@ -94,11 +94,11 @@ var sessions = {
                     if (e.keyIdentifier === "Enter") {
 
                         if (sessionInputField.value === "") {
-                            msgAlert.innerHTML = "Please enter a session name";
+                            msgAlert.innerHTML = "Enter a session name";
                             msgAlert.style.visibility = "visible";
                         }
                         else if (keyExists(sessionInputField.value, sessions)) { 
-                            msgAlert.innerHTML = "Session already exists";
+                            msgAlert.innerHTML = "Session already exists!";
                             msgAlert.style.visibility = "visible";
                         }
                         else {

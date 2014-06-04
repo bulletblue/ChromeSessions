@@ -28,7 +28,7 @@ var sessions = {
         var saveButton = document.getElementById("btn_save");
         saveButton.onclick = this.saveSession;
 
-        var deleteButton = document.getElementById("btn_clear");
+        var deleteButton = document.getElementById("btn_deleteAll");
         deleteButton.onclick = this.deleteAll;
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
@@ -46,22 +46,25 @@ var sessions = {
                 session.setAttribute("class", "session_cell");
                 session.appendChild(document.createTextNode(item));
 
-                var iconRemove = document.createElement("p");
-                iconRemove.setAttribute("class", "remove_session");
-                iconRemove.appendChild(document.createTextNode("Rm"));
+                var iconRemove = document.createElement("i");
+                iconRemove.setAttribute("class", "fa fa-minus");
+
+                var removeP = document.createElement("p");
+                removeP.setAttribute("class", "remove_session");
+                removeP.appendChild(iconRemove);
 
                 var table = document.getElementById("sessions_table");
                 var row = table.insertRow(0);
 
                 that.openSessionEV(session, items[item]);
-                that.removeSessionEV(iconRemove, item);
+                that.removeSessionEV(removeP, item);
                 
                 var cellSession = row.insertCell(0);
                 cellSession.width = "100%";
                 cellSession.appendChild(session);
 
                 var cellRemove = row.insertCell(1);
-                cellRemove.appendChild(iconRemove);
+                cellRemove.appendChild(removeP);
             }
         });
     },
@@ -117,9 +120,12 @@ var sessions = {
                                     newSession.setAttribute("class", "session_cell");
                                     newSession.appendChild(document.createTextNode(sessionKey));
 
-                                    var iconRemove = document.createElement("p");
-                                    iconRemove.setAttribute("class", "remove_session");
-                                    iconRemove.appendChild(document.createTextNode("Rm"));
+                                    var iconRemove = document.createElement("i");
+                                    iconRemove.setAttribute("class", "fa fa-minus");
+
+                                    var removeP = document.createElement("p");
+                                    removeP.setAttribute("class", "remove_session");
+                                    removeP.appendChild(iconRemove);
 
                                     var table = document.getElementById("sessions_table");
                                     var row = table.insertRow(0);
@@ -132,7 +138,7 @@ var sessions = {
                                     cellSession.appendChild(newSession);
 
                                     var cellRemove = row.insertCell(1);
-                                    cellRemove.appendChild(iconRemove);
+                                    cellRemove.appendChild(removeP);
                                 });
                             });
                             sessionInputField.removeEventListener("keydown", func);
@@ -147,9 +153,8 @@ var sessions = {
             });
         }
         else {
-            document.getElementById("msg_empty").style.visibility = "hidden";
+            //document.getElementById("msg_alert").style.visibility = "hidden";
             var input = document.getElementById("input_session").focus();
-            input.select(); 
         }
     },
 
@@ -201,6 +206,7 @@ var sessions = {
     },
 
     deleteAll: function() {
+        sessions.cancelSave();
         var table = document.getElementById("sessions_table");
         chrome.storage.sync.clear();
         var new_tBody = document.createElement('tbody');

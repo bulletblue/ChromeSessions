@@ -11,11 +11,11 @@ body {
     padding-bottom: 15px;
 }
 
-#btn_save:focus, #btn_clear:focus, #btn_cancelSave:focus {
+#btn_save:focus, #btn_deleteAll:focus, #btn_cancelSave:focus {
     outline: 0; /* Don't focus elements on load */
 }
 
-#btn_save, #btn_clear, #btn_cancelSave {
+#btn_save, #btn_deleteAll, #btn_cancelSave {
     position: relative;
     vertical-align: top;
     width: 75%;
@@ -29,7 +29,7 @@ body {
     cursor: pointer;
 }
 
-#btn_clear, #btn_cancelSave {
+#btn_deleteAll, #btn_cancelSave {
     width: 25%;
     border-left: 1px solid white;
 }
@@ -66,7 +66,7 @@ body {
     color: black;
 }
 
-#btn_clear:hover, #btn_cancelSave:hover {
+#btn_deleteAll:hover, #btn_cancelSave:hover {
     background-color: #C13232;
     color:white;
 }
@@ -75,7 +75,6 @@ body {
     min-height: 100%;
     position: relative;
 }
-
 
 
 /* ------------ ALERT ------------ */ 
@@ -109,6 +108,10 @@ table p {
     cursor: pointer;
 }
 
+table i {
+    margin-left: 1px;
+}
+
 #table_container::-webkit-scrollbar-track
 {
     background-color: #FFFFFF;
@@ -124,7 +127,7 @@ table p {
     background-color: #EFF4FB;
 }
 
-tr:nth-child(odd) {
+tr:nth-child(even) {
     background-color: #FAFBFD;
 }
 
@@ -134,6 +137,7 @@ tr:nth-child(odd) {
 }
 
 .remove_session {
+    width: 1em;
     margin: 0px;
     padding: 0px;
 }

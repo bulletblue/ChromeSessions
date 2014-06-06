@@ -99,13 +99,36 @@ body {
 
 table {
     border-collapse: collapse;
-    width: 100%;
+    /*width: 100%;*/
 }
 
-table p { 
+tr:nth-child(even) {
+    background-color: #FAFBFD;
+}
+
+/*table p { 
     font-size: 12px;
     margin: 0px;
     cursor: pointer;
+}*/
+
+
+.session_cell {
+    width: 100%;
+    font-size: 12px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.ellipses {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.session_cell:hover {
+    background-color: #6495DC;
+    color: white;
 }
 
 table i {
@@ -127,19 +150,11 @@ table i {
     background-color: #EFF4FB;
 }
 
-tr:nth-child(even) {
-    background-color: #FAFBFD;
-}
-
-.session_cell:hover {
-    background-color: #6495DC;
-    color: white;
-}
-
 .remove_session {
     width: 1em;
     margin: 0px;
     padding: 0px;
+    cursor: pointer;
 }
 .remove_session:hover {
     background-color: #C13232;

@@ -38,33 +38,35 @@ var sessions = {
     },
 
     getSessions: function() {
-        var that = sessions;
+        //var that = sessions;
         chrome.storage.sync.get(null, function(items) {
             for (var item in items) {
 
-                var session = document.createElement("p");
-                session.setAttribute("class", "session_cell");
-                session.appendChild(document.createTextNode(item));
+                sessions.setInTable(item, items[item]);
 
-                var iconRemove = document.createElement("i");
-                iconRemove.setAttribute("class", "fa fa-minus");
+                // var session = document.createElement("p");
+                // session.setAttribute("class", "session_cell ellipses");
+                // session.appendChild(document.createTextNode(item));
 
-                var removeP = document.createElement("p");
-                removeP.setAttribute("class", "remove_session");
-                removeP.appendChild(iconRemove);
+                // var iconRemove = document.createElement("i");
+                // iconRemove.setAttribute("class", "fa fa-minus");
 
-                var table = document.getElementById("sessions_table");
-                var row = table.insertRow(0);
+                // var removeP = document.createElement("p");
+                // removeP.setAttribute("class", "remove_session");
+                // removeP.appendChild(iconRemove);
 
-                that.openSessionEV(session, items[item]);
-                that.removeSessionEV(removeP, item);
+                // var table = document.getElementById("sessions_table");
+                // var row = table.insertRow(0);
+
+                // that.openSessionEV(session, items[item]);
+                // that.removeSessionEV(removeP, item);
                 
-                var cellSession = row.insertCell(0);
-                cellSession.width = "100%";
-                cellSession.appendChild(session);
+                // var cellSession = row.insertCell(0);
+                // cellSession.width = "100%";
+                // cellSession.appendChild(session);
 
-                var cellRemove = row.insertCell(1);
-                cellRemove.appendChild(removeP);
+                // var cellRemove = row.insertCell(1);
+                // cellRemove.appendChild(removeP);
             }
         });
     },
@@ -73,7 +75,7 @@ var sessions = {
         if (saveLock === 0) {
             var that = sessions;
             saveLock = 1;
-            var sessionKey = ""; //user provided name will be key in session object
+            var sessionKey = "";
 
             showSaveElements();
 
@@ -86,9 +88,9 @@ var sessions = {
                 console.log(e.keyIdentifier);
                 chrome.storage.sync.get(null, function(items) {
 
-                    var sessions = [];
+                    var sessionsList = [];
                     for (item in items) {
-                        sessions.push(item);
+                        sessionsList.push(item);
                     }
 
                     if (e.keyIdentifier === "Enter") {
@@ -97,7 +99,7 @@ var sessions = {
                             msgAlert.innerHTML = "Enter a session name";
                             msgAlert.style.visibility = "visible";
                         }
-                        else if (keyExists(sessionInputField.value, sessions)) { 
+                        else if (keyExists(sessionInputField.value, sessionsList)) { 
                             msgAlert.innerHTML = "Session already exists!";
                             msgAlert.style.visibility = "visible";
                         }
@@ -116,29 +118,32 @@ var sessions = {
                                 sessionObj[sessionKey] = urls;
 
                                 chrome.storage.sync.set(sessionObj, function() {
-                                    var newSession = document.createElement("p");
-                                    newSession.setAttribute("class", "session_cell");
-                                    newSession.appendChild(document.createTextNode(sessionKey));
 
-                                    var iconRemove = document.createElement("i");
-                                    iconRemove.setAttribute("class", "fa fa-minus");
+                                    sessions.setInTable(sessionKey, urls);
 
-                                    var removeP = document.createElement("p");
-                                    removeP.setAttribute("class", "remove_session");
-                                    removeP.appendChild(iconRemove);
+                                    // var newSession = document.createElement("p");
+                                    // newSession.setAttribute("class", "session_cell");
+                                    // newSession.appendChild(document.createTextNode(sessionKey));
 
-                                    var table = document.getElementById("sessions_table");
-                                    var row = table.insertRow(0);
+                                    // var iconRemove = document.createElement("i");
+                                    // iconRemove.setAttribute("class", "fa fa-minus");
 
-                                    that.openSessionEV(newSession, urls);
-                                    that.removeSessionEV(iconRemove, sessionKey);
+                                    // var removeP = document.createElement("p");
+                                    // removeP.setAttribute("class", "remove_session");
+                                    // removeP.appendChild(iconRemove);
 
-                                    var cellSession = row.insertCell(0);
-                                    cellSession.width = "100%";
-                                    cellSession.appendChild(newSession);
+                                    // var table = document.getElementById("sessions_table");
+                                    // var row = table.insertRow(0);
 
-                                    var cellRemove = row.insertCell(1);
-                                    cellRemove.appendChild(removeP);
+                                    // that.openSessionEV(newSession, urls);
+                                    // that.removeSessionEV(iconRemove, sessionKey);
+
+                                    // var cellSession = row.insertCell(0);
+                                    // cellSession.width = "100%";
+                                    // cellSession.appendChild(newSession);
+
+                                    // var cellRemove = row.insertCell(1);
+                                    // cellRemove.appendChild(removeP);
                                 });
                             });
                             sessionInputField.removeEventListener("keydown", func);
@@ -156,6 +161,32 @@ var sessions = {
             //document.getElementById("msg_alert").style.visibility = "hidden";
             var input = document.getElementById("input_session").focus();
         }
+    },
+
+    setInTable: function(sessionName, urls) {
+        var session = document.createElement("p");
+        session.setAttribute("class", "session_cell ellipses");
+        session.appendChild(document.createTextNode(sessionName));
+
+        var iconRemove = document.createElement("i");
+        iconRemove.setAttribute("class", "fa fa-minus");
+
+        var removeP = document.createElement("p");
+        removeP.setAttribute("class", "remove_session");
+        removeP.appendChild(iconRemove);
+
+        var table = document.getElementById("sessions_table");
+        var row = table.insertRow(0);
+
+        sessions.openSessionEV(session, urls);
+        sessions.removeSessionEV(removeP, sessionName);
+        
+        var cellSession = row.insertCell(0);
+        cellSession.width = "100%";
+        cellSession.appendChild(session);
+
+        var cellRemove = row.insertCell(1);
+        cellRemove.appendChild(removeP);
     },
 
     openSessionEV: function(session, urls) {
@@ -200,7 +231,7 @@ var sessions = {
     cancelSave: function() {
         saveLock = 0;
         document.getElementById('msg_alert').innerHTML = "Enter a session name";
-        document.getElementById('input_session').removeEventListener("keydown", "func");
+        document.getElementById("input_session").removeEventListener("keydown", "func");
         document.getElementById('input_session').value = "";
         hideSaveElements();
     },

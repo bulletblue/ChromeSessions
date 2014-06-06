@@ -11,6 +11,7 @@ function keyExists(key, sessionsList) {
 function hideSaveElements() {
     document.getElementById("msg_alert").style.visibility = "hidden";
     document.getElementById("msg_alert").innerHTML = "Enter a session name";
+    document.getElementById('input_session').value = "";
     document.getElementById("input_session").style.visibility = "hidden";
     document.getElementById("btn_cancelSave").style.visibility = "hidden"; 
 }
@@ -34,7 +35,7 @@ var sessions = {
         deleteButton.onclick = this.deleteAll;
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
-        cancelSaveButton.onclick = this.cancelSave;
+        cancelSaveButton.onclick = hideSaveElements;
 
         var inputSession = document.getElementById("input_session");
         inputSession.addEventListener("keydown", sessions.saveSession2);
@@ -156,16 +157,8 @@ var sessions = {
         });
     },
 
-    cancelSave: function() {
-        saveLock = 0;
-        document.getElementById('msg_alert').innerHTML = "Enter a session name";
-        //document.getElementById("input_session").removeEventListener("keydown", "func");
-        document.getElementById('input_session').value = "";
-        hideSaveElements();
-    },
-
     deleteAll: function() {
-        sessions.cancelSave();
+        hideSaveElements();
         var table = document.getElementById("sessions_table");
         chrome.storage.sync.clear();
         var new_tBody = document.createElement('tbody');

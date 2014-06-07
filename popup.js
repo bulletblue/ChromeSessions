@@ -38,7 +38,7 @@ var sessions = {
         cancelSaveButton.onclick = hideSaveElements;
 
         var inputSession = document.getElementById("input_session");
-        inputSession.addEventListener("keydown", sessions.saveSession2);
+        inputSession.addEventListener("keydown", this.saveSession);
         hideSaveElements();
     },
 
@@ -46,7 +46,7 @@ var sessions = {
         chrome.storage.sync.get(null, function(items) { for (var item in items) { sessions.setInTable(item, items[item]); }});
     },
 
-    saveSession2: function(e) {
+    saveSession: function(e) {
         if (e.keyIdentifier === "Enter") {
             chrome.storage.sync.get(null, function(items) {
 
@@ -94,7 +94,7 @@ var sessions = {
 
     setInTable: function(sessionName, urls) {
         var session = document.createElement("p");
-        session.setAttribute("class", "session_cell ellipses");
+        session.setAttribute("class", "session_cell ellipsis");
         session.appendChild(document.createTextNode(sessionName));
 
         var iconRemove = document.createElement("i");
@@ -130,7 +130,7 @@ var sessions = {
                 for (var i = 0; i < urls.length; i++) {
                     chrome.tabs.create({url: urls[i]});
                 }
-                chrome.tabs.remove(tabs[0].id);  //close empty tab in new window
+                chrome.tabs.remove(tabs[0].id);
             }
             else {
                 chrome.windows.create({url: urls, focused: true});
@@ -161,8 +161,8 @@ var sessions = {
         hideSaveElements();
         var table = document.getElementById("sessions_table");
         chrome.storage.sync.clear();
-        var new_tBody = document.createElement('tbody');
-        table.replaceChild(new_tBody, table.firstChild);
+        document.createElement('tbody');
+        table.replaceChild(document.createElement('tbody'), table.firstChild);
     }
 };
 

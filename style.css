@@ -112,15 +112,15 @@ tr:nth-child(even) {
     cursor: pointer;
 }*/
 
-
 .session_cell {
     width: 100%;
     font-size: 12px;
     margin: 0px;
     cursor: pointer;
+    border: 1px solid black;
 }
 
-.ellipses {
+.ellipsis {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -155,6 +155,7 @@ table i {
     margin: 0px;
     padding: 0px;
     cursor: pointer;
+    border: 1px solid red;
 }
 .remove_session:hover {
     background-color: #C13232;

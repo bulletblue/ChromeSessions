@@ -58,13 +58,27 @@ var sessions = {
                 var msgAlert = document.getElementById("msg_alert");
                 var sessionInputField = document.getElementById("input_session");
                 var cancelSaveButton = document.getElementById("btn_cancelSave");
+
+
+
+                /* Session names must be max of 200 characters, unique, non-null, 
+                and a session will only be saved if there are less than 100 current sessions saved.*/
                 
                 if (sessionInputField.value === "") {
                     msgAlert.innerHTML = "Enter a session name";
                     msgAlert.style.visibility = "visible";
                 }
+                else if (sessionInputField.value.length > 200) {
+                    msgAlert.innerHTML = "Session name exceeds 200 characters.";
+                    msgAlert.style.visibility = "visible";
+                }
                 else if (keyExists(sessionInputField.value, sessionsList)) {
                     msgAlert.innerHTML = "Session already exists!";
+                    msgAlert.style.visibility = "visible";
+                }
+                else if (sessionsList.length === 100) //Allow storage of only 100 sessions
+                {
+                    msgAlert.innerHTML = "Max sessions exceeded.";
                     msgAlert.style.visibility = "visible";
                 }
                 else {
@@ -111,7 +125,6 @@ var sessions = {
         sessions.removeSessionEV(removeP, sessionName);
         
         var cellSession = row.insertCell(0);
-        cellSession.width = "100%";
         cellSession.appendChild(session);
 
         var cellRemove = row.insertCell(1);

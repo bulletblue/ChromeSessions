@@ -106,18 +106,16 @@ tr:nth-child(even) {
     background-color: #FAFBFD;
 }
 
-/*table p { 
-    font-size: 12px;
-    margin: 0px;
-    cursor: pointer;
-}*/
+tr > td {
+    width: 100%;
+}
 
 .session_cell {
-    width: 100%;
+    width: 200px;
     font-size: 12px;
     margin: 0px;
     cursor: pointer;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 .ellipsis {
@@ -155,7 +153,7 @@ table i {
     margin: 0px;
     padding: 0px;
     cursor: pointer;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 .remove_session:hover {
     background-color: #C13232;

@@ -109,6 +109,7 @@ var sessions = {
     setInTable: function(sessionName, urls) {
         var session = document.createElement("p");
         session.setAttribute("class", "session_cell ellipsis");
+        session.setAttribute("title", sessionName);
         session.appendChild(document.createTextNode(sessionName));
 
         var iconRemove = document.createElement("i");

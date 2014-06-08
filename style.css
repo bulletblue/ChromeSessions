@@ -62,7 +62,7 @@ body {
 }
 
 #btn_save:disabled {
-    background-color: gray;
+    background-color: #A3A3A3;
     color: black;
 }
 
@@ -99,7 +99,6 @@ body {
 
 table {
     border-collapse: collapse;
-    /*width: 100%;*/
 }
 
 tr:nth-child(even) {
@@ -111,11 +110,10 @@ tr > td {
 }
 
 .session_cell {
-    width: 200px;
+    width: 205px;
     font-size: 12px;
     margin: 0px;
     cursor: pointer;
-    /*border: 1px solid black;*/
 }
 
 .ellipsis {
@@ -127,10 +125,6 @@ tr > td {
 .session_cell:hover {
     background-color: #6495DC;
     color: white;
-}
-
-table i {
-    margin-left: 1px;
 }
 
 #table_container::-webkit-scrollbar-track
@@ -151,11 +145,10 @@ table i {
 .remove_session {
     width: 1em;
     margin: 0px;
-    padding: 0px;
+    padding-right: 1px;
     cursor: pointer;
-    /*border: 1px solid red;*/
+    color: #7f7f7f;
 }
 .remove_session:hover {
-    background-color: #C13232;
-    color:white;
+    color:#C13232;
 }

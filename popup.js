@@ -10,7 +10,8 @@ function keyExists(key, sessionsList) {
 
 function hideSaveElements() {
     document.getElementById("msg_alert").style.visibility = "hidden";
-    document.getElementById("msg_alert").innerHTML = "Enter a session name";
+    document.getElementById("msg_alert").innerHTML = "Please enter a session name.";
+    document.getElementById("msg_alert").style.color = "#696969";
     document.getElementById('input_session').value = "";
     document.getElementById("input_session").style.visibility = "hidden";
     document.getElementById("btn_cancelSave").style.visibility = "hidden"; 
@@ -43,7 +44,11 @@ var sessions = {
     },
 
     getSessions: function() {
-        chrome.storage.sync.get(null, function(items) { for (var item in items) { sessions.setInTable(item, items[item]); }});
+        chrome.storage.sync.get(null, function(items) { 
+            for (var item in items) { 
+                sessions.setInTable(item, items[item]);
+            }
+        });
     },
 
     saveSession: function(e) {
@@ -65,21 +70,25 @@ var sessions = {
                 and a session will only be saved if there are less than 100 current sessions saved.*/
                 
                 if (sessionInputField.value === "") {
-                    msgAlert.innerHTML = "Enter a session name";
+                    msgAlert.innerHTML = "Session name is required.";
                     msgAlert.style.visibility = "visible";
+                    msgAlert.style.color = "red";
                 }
                 else if (sessionInputField.value.length > 200) {
                     msgAlert.innerHTML = "Session name exceeds 200 characters.";
                     msgAlert.style.visibility = "visible";
+                    msgAlert.style.color = "red";
                 }
                 else if (keyExists(sessionInputField.value, sessionsList)) {
-                    msgAlert.innerHTML = "Session already exists!";
+                    msgAlert.innerHTML = "Session already exists.";
                     msgAlert.style.visibility = "visible";
+                    msgAlert.style.color = "red";
                 }
                 else if (sessionsList.length === 100) //Allow storage of only 100 sessions
                 {
                     msgAlert.innerHTML = "Max sessions exceeded.";
                     msgAlert.style.visibility = "visible";
+                    msgAlert.style.color = "red";
                 }
                 else {
                     chrome.tabs.query({"currentWindow": true}, function(tabs) {
@@ -113,7 +122,8 @@ var sessions = {
         session.appendChild(document.createTextNode(sessionName));
 
         var iconRemove = document.createElement("i");
-        iconRemove.setAttribute("class", "fa fa-minus");
+        // iconRemove.setAttribute("class", "fa fa-minus");
+        iconRemove.setAttribute("class", "fa fa-minus-square-o fa-lg");
 
         var removeP = document.createElement("p");
         removeP.setAttribute("class", "remove_session");
@@ -172,11 +182,13 @@ var sessions = {
     },
 
     deleteAll: function() {
-        hideSaveElements();
-        var table = document.getElementById("sessions_table");
         chrome.storage.sync.clear();
+
+        var table = document.getElementById("sessions_table");
         document.createElement('tbody');
         table.replaceChild(document.createElement('tbody'), table.firstChild);
+        
+        hideSaveElements();
     }
 };
 

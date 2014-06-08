@@ -15,7 +15,7 @@ body {
     outline: 0; /* Don't focus elements on load */
 }
 
-#btn_save, #btn_deleteAll, #btn_cancelSave {
+#btn_save, #btn_deleteAll, #btn_cancelSave, #btn_confirmSave {
     position: relative;
     vertical-align: top;
     width: 75%;
@@ -29,13 +29,18 @@ body {
     cursor: pointer;
 }
 
-#btn_deleteAll, #btn_cancelSave {
+#btn_deleteAll {
     width: 25%;
     border-left: 1px solid white;
 }
 
-#btn_cancelSave {
+#btn_cancelSave, #btn_confirmSave {
     height: 20px;
+    width: 12%;
+}
+
+#btn_confirmSave {
+    border-right: 2px solid white;
 }
 
 #input_elements {
@@ -48,7 +53,7 @@ body {
     background-color: #FFFFFF;
     padding-top: 2px;
     margin: 0px;
-    width: 72%;
+    width: 73%;
 }
 
 #input_session:focus {
@@ -56,7 +61,7 @@ body {
     outline: 0;
 }
 
-#btn_save:hover {
+#btn_save:hover, #btn_confirmSave:hover {
     background-color: #6495DC;
     color: white;
 }
@@ -109,6 +114,11 @@ tr > td {
     width: 100%;
 }
 
+tr:hover {
+    background-color: #6495DC;
+    color: white;
+}
+
 .session_cell {
     width: 200px;
     font-size: 12px;
@@ -120,11 +130,6 @@ tr > td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.session_cell:hover {
-    background-color: #6495DC;
-    color: white;
 }
 
 #table_container::-webkit-scrollbar-track
@@ -143,12 +148,12 @@ tr > td {
 }
 
 .remove_session {
+    text-align: center;
     width: 1em;
     margin: 0px;
-    padding-right: 1px;
     cursor: pointer;
-    color: #7f7f7f;
 }
+
 .remove_session:hover {
-    color:#C13232;
+    color: #E5E5E5;
 }

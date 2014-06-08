@@ -14,14 +14,16 @@ function hideSaveElements() {
     document.getElementById("msg_alert").style.color = "#696969";
     document.getElementById('input_session').value = "";
     document.getElementById("input_session").style.visibility = "hidden";
-    document.getElementById("btn_cancelSave").style.visibility = "hidden"; 
+    document.getElementById("btn_cancelSave").style.visibility = "hidden";
+    document.getElementById("btn_confirmSave").style.visibility = "hidden";  
 }
 
 function showSaveElements() {
     document.getElementById("msg_alert").style.visibility = "visible";
     document.getElementById("input_session").style.visibility = "visible";
     document.getElementById("input_session").focus();
-    document.getElementById("btn_cancelSave").style.visibility = "visible"; 
+    document.getElementById("btn_cancelSave").style.visibility = "visible";
+    document.getElementById("btn_confirmSave").style.visibility = "visible"; 
 }
 
 var sessions = {
@@ -37,6 +39,9 @@ var sessions = {
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
+
+        var confirmSaveButton = document.getElementById("btn_confirmSave");
+        confirmSaveButton.onclick = function() { sessions.saveSession({"keyIdentifier": "Enter"}); };
 
         var inputSession = document.getElementById("input_session");
         inputSession.addEventListener("keydown", this.saveSession);
@@ -122,12 +127,12 @@ var sessions = {
         session.appendChild(document.createTextNode(sessionName));
 
         var iconRemove = document.createElement("i");
-        // iconRemove.setAttribute("class", "fa fa-minus");
-        iconRemove.setAttribute("class", "fa fa-minus-square-o fa-lg");
+        iconRemove.setAttribute("class", "fa fa fa-times");
 
         var removeP = document.createElement("p");
         removeP.setAttribute("class", "remove_session");
-        removeP.appendChild(iconRemove);
+        removeP.appendChild(iconRemove); 
+        removeP.style.visibility = "hidden";
 
         var table = document.getElementById("sessions_table");
         var row = table.insertRow(0);
@@ -137,6 +142,16 @@ var sessions = {
         
         var cellSession = row.insertCell(0);
         cellSession.appendChild(session);
+        
+        row.onmouseover =  function() { 
+            removeP.style.visibility = "visible";
+            cellSession.style.borderRight = "2px solid white";
+        }
+
+        row.onmouseout =  function() { 
+            removeP.style.visibility = "hidden";
+            cellSession.style.borderRight = "";
+        }
 
         var cellRemove = row.insertCell(1);
         cellRemove.appendChild(removeP);

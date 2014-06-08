@@ -3,7 +3,7 @@
 
     "name": "Chrome Sessions",
     "description": "Compile your tabs into Sessions.",
-    "version": "1.0.1",
+    "version": "1.0.2",
 
     "permissions": ["tabs", "storage"],
 

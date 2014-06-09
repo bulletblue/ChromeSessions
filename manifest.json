@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
 
-    "name": "Chrome Sessions",
+    "name": "Sessions for Google Chrome™",
     "description": "Compile your tabs into Sessions.",
-    "version": "1.0.2",
+    "version": "1.0.3",
 
     "permissions": ["tabs", "storage"],
 

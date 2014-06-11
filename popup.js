@@ -8,6 +8,28 @@ function keyExists(key, sessionsList) {
     return false;
 }
 
+function getTimeStamp() {
+    var now = new Date();
+    var hours;
+    var amFlag;
+
+    if (now.getHours() > 12) {
+        hours = now.getHours() - 12;
+        amFlag = "PM";
+    }
+    else if (now.getHours() === 12) {
+        hours = 12;
+        amFlag = "PM;"
+    }
+    else {
+        hours = now.getHours();
+        amFlag = "AM";
+    }
+    
+    return timeStamp = (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear() + " " 
+    + hours + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + amFlag;
+}
+
 function hideSaveElements() {
     document.getElementById("msg_alert").style.visibility = "hidden";
     document.getElementById("msg_alert").innerHTML = "Please enter a session name.";
@@ -127,7 +149,7 @@ var sessions = {
 
         var date = document.createElement("p");
         date.setAttribute("class", "date");
-        date.appendChild(document.createTextNode("04/05/14"));
+        date.appendChild(document.createTextNode(getTimeStamp()));
 
         var iconRemove = document.createElement("i");
         iconRemove.setAttribute("class", "fa fa fa-times");
@@ -140,13 +162,14 @@ var sessions = {
         var table = document.getElementById("sessions_table");
         var row = table.insertRow(0);
 
-        sessions.openSessionEV(session, urls);
-        sessions.removeSessionEV(removeP, sessionName);
-        
         var cellSession = row.insertCell(0);
         cellSession.setAttribute("title", sessionName);
         cellSession.appendChild(session);
         cellSession.appendChild(date);
+
+        sessions.openSessionEV(cellSession, urls);
+        sessions.removeSessionEV(removeP, sessionName);
+        
         
         row.onmouseover =  function() { 
             removeP.style.visibility = "visible";

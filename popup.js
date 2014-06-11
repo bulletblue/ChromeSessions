@@ -123,7 +123,6 @@ var sessions = {
     setInTable: function(sessionName, urls) {
         var session = document.createElement("p");
         session.setAttribute("class", "session_cell ellipsis");
-        session.setAttribute("title", sessionName);
         session.appendChild(document.createTextNode(sessionName));
 
         var date = document.createElement("p");
@@ -145,6 +144,7 @@ var sessions = {
         sessions.removeSessionEV(removeP, sessionName);
         
         var cellSession = row.insertCell(0);
+        cellSession.setAttribute("title", sessionName);
         cellSession.appendChild(session);
         cellSession.appendChild(date);
         

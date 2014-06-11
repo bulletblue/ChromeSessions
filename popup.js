@@ -34,8 +34,8 @@ var sessions = {
         var saveButton = document.getElementById("btn_save");
         saveButton.onclick = showSaveElements;
 
-        var deleteButton = document.getElementById("btn_deleteAll");
-        deleteButton.onclick = this.deleteAll;
+        // var deleteButton = document.getElementById("btn_deleteAll");
+        // deleteButton.onclick = this.deleteAll;
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
@@ -126,6 +126,10 @@ var sessions = {
         session.setAttribute("title", sessionName);
         session.appendChild(document.createTextNode(sessionName));
 
+        var date = document.createElement("p");
+        date.setAttribute("class", "date");
+        date.appendChild(document.createTextNode("04/05/14"));
+
         var iconRemove = document.createElement("i");
         iconRemove.setAttribute("class", "fa fa fa-times");
 
@@ -142,6 +146,7 @@ var sessions = {
         
         var cellSession = row.insertCell(0);
         cellSession.appendChild(session);
+        cellSession.appendChild(date);
         
         row.onmouseover =  function() { 
             removeP.style.visibility = "visible";

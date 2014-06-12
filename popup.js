@@ -11,6 +11,7 @@ function keyExists(key, sessionsList) {
 function getTimeStamp() {
     var now = new Date();
     var hours;
+    var seconds = (now.getSeconds() < 10) ? "0" + now.getSeconds() : now.getSeconds();
     var amFlag;
 
     if (now.getHours() > 12) {
@@ -27,7 +28,7 @@ function getTimeStamp() {
     }
     
     return timeStamp = (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear() + " " 
-    + hours + ":" + now.getMinutes() + ":" + now.getSeconds() + " " + amFlag;
+    + hours + ":" + now.getMinutes() + ":" + seconds + " " + amFlag;
 }
 
 function hideSaveElements() {

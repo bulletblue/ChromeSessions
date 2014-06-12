@@ -73,7 +73,8 @@ var sessions = {
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) { 
             for (var item in items) { 
-                sessions.setInTable(item, items[item]);
+                console.log(items);
+                sessions.setInTable(item, items[item], item["timeStamp"]);
             }
         });
     },
@@ -124,11 +125,14 @@ var sessions = {
                             urls[i] = tabs[i].url;
                         }
 
+                        var time = getTimeStamp();
                         var sessionObj = {};
                         sessionObj[sessionInputField.value] = urls;
+                        sessionObj["timeStamp"] = time;
+                        console.log(sessionObj);
 
                         chrome.storage.sync.set(sessionObj, function() {
-                            sessions.setInTable(sessionInputField.value, urls);
+                            sessions.setInTable(sessionInputField.value, urls, time);
                             sessionInputField.value = "";
                             hideSaveElements();
                         });
@@ -142,14 +146,14 @@ var sessions = {
         }
     },
 
-    setInTable: function(sessionName, urls) {
+    setInTable: function(sessionName, urls, timeStamp) {
         var session = document.createElement("p");
         session.setAttribute("class", "session_cell ellipsis");
         session.appendChild(document.createTextNode(sessionName));
 
         var date = document.createElement("p");
         date.setAttribute("class", "date");
-        date.appendChild(document.createTextNode(getTimeStamp()));
+        date.appendChild(document.createTextNode(timeStamp));
 
         var iconRemove = document.createElement("i");
         iconRemove.setAttribute("class", "fa fa fa-times");

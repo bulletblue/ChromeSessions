@@ -61,6 +61,7 @@ var sessions = {
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
+        // cancelSaveButton.onclick = this.deleteAll;
 
         var confirmSaveButton = document.getElementById("btn_confirmSave");
         confirmSaveButton.onclick = function() { sessions.saveSession({"keyIdentifier": "Enter"}); };
@@ -73,7 +74,7 @@ var sessions = {
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
             for (var item in items) { 
-                sessions.setInTable(item, items[item].urls,  items[item].timeStamp);
+                sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
             }
         });
     },
@@ -133,7 +134,7 @@ var sessions = {
                         sessionObj[sessionInputField.value] = details;
 
                         chrome.storage.sync.set(sessionObj, function() {
-                            sessions.setInTable(sessionInputField.value, urls, time);
+                            sessions.setInTable(sessionInputField.value, urls, time, true);
                             sessionInputField.value = "";
                             hideSaveElements();
                         });
@@ -147,7 +148,7 @@ var sessions = {
         }
     },
 
-    setInTable: function(sessionName, urls, timeStamp) {
+    setInTable: function(sessionName, urls, timeStamp, isNew) {
         var session = document.createElement("p");
         session.setAttribute("class", "session_cell ellipsis");
         session.appendChild(document.createTextNode(sessionName));
@@ -188,6 +189,10 @@ var sessions = {
 
         var cellRemove = row.insertCell(1);
         cellRemove.appendChild(removeP);
+        
+        if (isNew) {
+            $("tr:first-child").effect("highlight",{color: "#FFFFCB"}, 3000);
+        } 
     },
 
     openSessionEV: function(session, urls) {

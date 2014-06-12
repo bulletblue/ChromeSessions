@@ -123,6 +123,7 @@ tr > td {
     width: 100%;
 }
 
+
 tr:hover, tr:hover .date {
     background-color: #6495DC;
     color: white;

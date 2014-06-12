@@ -61,7 +61,6 @@ var sessions = {
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
-        // cancelSaveButton.onclick = this.deleteAll; 
 
         var confirmSaveButton = document.getElementById("btn_confirmSave");
         confirmSaveButton.onclick = function() { sessions.saveSession({"keyIdentifier": "Enter"}); };
@@ -70,15 +69,6 @@ var sessions = {
         inputSession.addEventListener("keydown", this.saveSession);
         hideSaveElements();
     },
-
-    // getSessions2: function() {
-    //     chrome.storage.sync.get(null, function(items) {
-    //         //console.log(items);
-    //         for (var item in items) { 
-    //             sessions.setInTable(item, items[item], item["timeStamp"]);
-    //         }
-    //     });
-    // },
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
@@ -129,20 +119,20 @@ var sessions = {
                 }
                 else {
                     chrome.tabs.query({"currentWindow": true}, function(tabs) {
+                        var time = getTimeStamp();
                         var urls = [];
                         for (var i = 0; i < tabs.length; i++) {
                             urls[i] = tabs[i].url;
                         }
 
-                        var time = getTimeStamp();
-                        var sessionObj = {};
-                        //sessionObj["name"] = sessionInputField.value;
-                        sessionObj["urls"] = urls;
-                        sessionObj["timeStamp"] = time;
-                        var obj = {};
-                        obj[sessionInputField.value] = sessionObj;
+                        var details = {};
+                        details["urls"] = urls;
+                        details["timeStamp"] = time;
 
-                        chrome.storage.sync.set(obj, function() {
+                        var sessionObj = {};
+                        sessionObj[sessionInputField.value] = details;
+
+                        chrome.storage.sync.set(sessionObj, function() {
                             sessions.setInTable(sessionInputField.value, urls, time);
                             sessionInputField.value = "";
                             hideSaveElements();

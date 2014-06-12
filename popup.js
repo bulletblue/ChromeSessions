@@ -189,10 +189,11 @@ var sessions = {
         }
 
         var cellRemove = row.insertCell(1);
+        cellRemove.setAttribute("class", "remove_cell");
         cellRemove.appendChild(removeP);
         
         if (isNew) {
-            $("tr:first-child").effect("highlight",{color: "#FFFFCB"}, 3000);
+            $("tr:first-child").effect("highlight",{color: "#FFFFCB"}, 1000);
         } 
     },
 

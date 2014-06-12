@@ -11,11 +11,11 @@ body {
     padding-bottom: 15px;
 }
 
-#btn_save:focus, #btn_deleteAll:focus, #btn_cancelSave:focus {
+#btn_save:focus, #btn_cancelSave:focus {
     outline: 0; /* Don't focus elements on load */
 }
 
-#btn_save, #btn_deleteAll, #btn_cancelSave, #btn_confirmSave {
+#btn_save, #btn_cancelSave, #btn_confirmSave {
     position: relative;
     vertical-align: top;
     width: 100%;
@@ -27,11 +27,6 @@ body {
     background: #EFF4FB;
     border: 0px;
     cursor: pointer;
-}
-
-#btn_deleteAll {
-    width: 25%;
-    border-left: 1px solid white;
 }
 
 #btn_cancelSave, #btn_confirmSave {
@@ -72,7 +67,7 @@ body {
     color: black;
 }
 
-#btn_deleteAll:hover, #btn_cancelSave:hover {
+#btn_cancelSave:hover, .remove_cell:hover {
     background-color: #C13232;
     color:white;
 }
@@ -131,7 +126,7 @@ tr:hover, tr:hover .date {
 }
 
 .session_cell {
-    width: 200px;
+    width: 180px;
     font-size: 12px;
     margin: 0px;
 }
@@ -159,11 +154,12 @@ tr:hover, tr:hover .date {
 
 .remove_session {
     text-align: center;
-    width: 1em;
+    width: 2em;
     margin: 0px;
     cursor: pointer;
 }
 
-.remove_session:hover {
+/*.remove_cell:hover {
+    background-color: red;
     color: #E5E5E5;
-}
+}*/

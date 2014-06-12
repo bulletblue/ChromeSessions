@@ -12,6 +12,7 @@ function getTimeStamp() {
     var now = new Date();
     var hours;
     var seconds = (now.getSeconds() < 10) ? "0" + now.getSeconds() : now.getSeconds();
+    var minutes = (now.getMinutes() < 10) ? "0" + now.getMinutes() : now.getMinutes();
     var amFlag;
 
     if (now.getHours() > 12) {
@@ -28,7 +29,7 @@ function getTimeStamp() {
     }
     
     return timeStamp = (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear() + " " 
-    + hours + ":" + now.getMinutes() + ":" + seconds + " " + amFlag;
+    + hours + ":" + minutes + ":" + seconds + " " + amFlag;
 }
 
 function hideSaveElements() {
@@ -57,9 +58,6 @@ var sessions = {
         var saveButton = document.getElementById("btn_save");
         saveButton.onclick = showSaveElements;
 
-        // var deleteButton = document.getElementById("btn_deleteAll");
-        // deleteButton.onclick = this.deleteAll;
-
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
         // cancelSaveButton.onclick = this.deleteAll;
@@ -74,6 +72,7 @@ var sessions = {
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
+            console.log(items);
             for (var item in items) { 
                 sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
             }

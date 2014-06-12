@@ -61,6 +61,7 @@ var sessions = {
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
+        // cancelSaveButton.onclick = this.deleteAll; 
 
         var confirmSaveButton = document.getElementById("btn_confirmSave");
         confirmSaveButton.onclick = function() { sessions.saveSession({"keyIdentifier": "Enter"}); };
@@ -70,11 +71,19 @@ var sessions = {
         hideSaveElements();
     },
 
+    // getSessions2: function() {
+    //     chrome.storage.sync.get(null, function(items) {
+    //         //console.log(items);
+    //         for (var item in items) { 
+    //             sessions.setInTable(item, items[item], item["timeStamp"]);
+    //         }
+    //     });
+    // },
+
     getSessions: function() {
-        chrome.storage.sync.get(null, function(items) { 
+        chrome.storage.sync.get(null, function(items) {
             for (var item in items) { 
-                console.log(items);
-                sessions.setInTable(item, items[item], item["timeStamp"]);
+                sessions.setInTable(item, items[item].urls,  items[item].timeStamp);
             }
         });
     },
@@ -127,11 +136,13 @@ var sessions = {
 
                         var time = getTimeStamp();
                         var sessionObj = {};
-                        sessionObj[sessionInputField.value] = urls;
+                        //sessionObj["name"] = sessionInputField.value;
+                        sessionObj["urls"] = urls;
                         sessionObj["timeStamp"] = time;
-                        console.log(sessionObj);
+                        var obj = {};
+                        obj[sessionInputField.value] = sessionObj;
 
-                        chrome.storage.sync.set(sessionObj, function() {
+                        chrome.storage.sync.set(obj, function() {
                             sessions.setInTable(sessionInputField.value, urls, time);
                             sessionInputField.value = "";
                             hideSaveElements();

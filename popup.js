@@ -23,6 +23,10 @@ function getTimeStamp() {
         hours = 12;
         amFlag = "PM;"
     }
+    else if (now.getHours() === 0) {
+        hours = 12;
+        amFlag = "AM";
+    }
     else {
         hours = now.getHours();
         amFlag = "AM";
@@ -72,7 +76,6 @@ var sessions = {
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
-            console.log(items);
             for (var item in items) { 
                 sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
             }
@@ -221,7 +224,7 @@ var sessions = {
             var rows = document.getElementById("sessions_table").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
             
             for (i = 0; i < rows.length; i++) {
-                rows[i].onclick = function() {
+                rows[i].onclick = function () {
                     sessions.removeSession(item, this.rowIndex);
                 }
             }
@@ -229,6 +232,7 @@ var sessions = {
     },
 
     removeSession: function(sessionKey, row) {
+        console.log(row);
         chrome.storage.sync.remove(sessionKey, function() {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);

@@ -176,7 +176,8 @@ var sessions = {
         cellSession.appendChild(session);
         cellSession.appendChild(date);
 
-        sessions.openSessionEV(cellSession, urls);
+        //sessions.openSessionEV(cellSession, urls);
+        cellSession.addEventListener("click", function() { sessions.openSession(urls) });
         sessions.removeSessionEV(removeP, sessionName);
         
         
@@ -199,11 +200,11 @@ var sessions = {
         } 
     },
 
-    openSessionEV: function(session, urls) {
-        session.addEventListener("click", function() {
-            sessions.openSession(urls);
-        });
-    },
+    // openSessionEV: function(session, urls) {
+    //     session.addEventListener("click", function() {
+    //         sessions.openSession(urls);
+    //     });
+    // },
 
     openSession: function(urls) {
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
@@ -222,8 +223,7 @@ var sessions = {
     removeSessionEV: function(iconRemove, item) {
         iconRemove.addEventListener("click", function() {
             var rows = document.getElementById("sessions_table").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-            console.log(rows);
-            
+
             for (i = 0; i < rows.length; i++) {
                 rows[i].onclick = function () {
                     sessions.removeSession(item, this.rowIndex);
@@ -233,6 +233,7 @@ var sessions = {
     },
 
     removeSession: function(sessionKey, row) {
+        // console.log("in here first");
         chrome.storage.sync.remove(sessionKey, function() {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);

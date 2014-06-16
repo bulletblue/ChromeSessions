@@ -32,7 +32,7 @@ function getTimeStamp() {
         amFlag = "AM";
     }
     
-    return timeStamp = (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear() + " " 
+    return (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear() + " " 
     + hours + ":" + minutes + ":" + seconds + " " + amFlag;
 }
 
@@ -222,6 +222,7 @@ var sessions = {
     removeSessionEV: function(iconRemove, item) {
         iconRemove.addEventListener("click", function() {
             var rows = document.getElementById("sessions_table").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            console.log(rows);
             
             for (i = 0; i < rows.length; i++) {
                 rows[i].onclick = function () {
@@ -232,7 +233,6 @@ var sessions = {
     },
 
     removeSession: function(sessionKey, row) {
-        console.log(row);
         chrome.storage.sync.remove(sessionKey, function() {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);

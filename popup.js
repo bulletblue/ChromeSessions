@@ -75,8 +75,13 @@ var sessions = {
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
-            for (var item in items) { 
-                sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
+            console.log(Object.keys(items).length);
+            console.log(items);
+            for (var item in items) {
+                if (items.hasOwnProperty(item)) {
+                    console.log(item); 
+                    sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
+                }
             }
         });
     },
@@ -114,7 +119,7 @@ var sessions = {
                     msgAlert.style.visibility = "visible";
                     msgAlert.style.color = "red";
                 }
-                else if (sessionsList.length === 100) //Allow storage of only 100 sessions
+                else if (sessionsList.length === 100)
                 {
                     msgAlert.innerHTML = "Max sessions exceeded.";
                     msgAlert.style.visibility = "visible";
@@ -216,16 +221,6 @@ var sessions = {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);
         });
-    },
-
-    deleteAll: function() {
-        chrome.storage.sync.clear();
-
-        var table = document.getElementById("sessions_table");
-        document.createElement('tbody');
-        table.replaceChild(document.createElement('tbody'), table.firstChild);
-        
-        hideSaveElements();
     }
 };
 

@@ -79,7 +79,6 @@ var sessions = {
             console.log(items);
             for (var item in items) {
                 if (items.hasOwnProperty(item)) {
-                    console.log(item); 
                     sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
                 }
             }
@@ -151,7 +150,12 @@ var sessions = {
         }   
         else
         {
-           document.getElementById("msg_alert").style.visibility = "hidden";
+            if (document.getElementById("input_session").value == "") {
+                document.getElementById("msg_alert").style.visibility = "visible";
+            }
+            else {
+                document.getElementById("msg_alert").style.visibility = "hidden";
+            }
         }
     },
 

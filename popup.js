@@ -64,7 +64,6 @@ var sessions = {
 
         var cancelSaveButton = document.getElementById("btn_cancelSave");
         cancelSaveButton.onclick = hideSaveElements;
-        // cancelSaveButton.onclick = this.deleteAll;
 
         var confirmSaveButton = document.getElementById("btn_confirmSave");
         confirmSaveButton.onclick = function() { sessions.saveSession({"keyIdentifier": "Enter"}); };
@@ -176,10 +175,12 @@ var sessions = {
         cellSession.appendChild(session);
         cellSession.appendChild(date);
 
-        //sessions.openSessionEV(cellSession, urls);
+        var cellRemove = row.insertCell(1);
+        cellRemove.setAttribute("class", "remove_cell");
+        cellRemove.appendChild(removeP);
+
         cellSession.addEventListener("click", function() { sessions.openSession(urls) });
-        sessions.removeSessionEV(removeP, sessionName);
-        
+        cellRemove.addEventListener("click", function() { sessions.removeSession(sessionName, $(this).parent().index()); });       
         
         row.onmouseover =  function() { 
             removeP.style.visibility = "visible";
@@ -190,21 +191,11 @@ var sessions = {
             removeP.style.visibility = "hidden";
             cellSession.style.borderRight = "";
         }
-
-        var cellRemove = row.insertCell(1);
-        cellRemove.setAttribute("class", "remove_cell");
-        cellRemove.appendChild(removeP);
-        
+    
         if (isNew) {
             $("tr:first-child").effect("highlight",{color: "#FFFFCB"}, 1000);
         } 
     },
-
-    // openSessionEV: function(session, urls) {
-    //     session.addEventListener("click", function() {
-    //         sessions.openSession(urls);
-    //     });
-    // },
 
     openSession: function(urls) {
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
@@ -220,20 +211,7 @@ var sessions = {
         });
     },
 
-    removeSessionEV: function(iconRemove, item) {
-        iconRemove.addEventListener("click", function() {
-            var rows = document.getElementById("sessions_table").getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-
-            for (i = 0; i < rows.length; i++) {
-                rows[i].onclick = function () {
-                    sessions.removeSession(item, this.rowIndex);
-                }
-            }
-        });
-    },
-
     removeSession: function(sessionKey, row) {
-        // console.log("in here first");
         chrome.storage.sync.remove(sessionKey, function() {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);

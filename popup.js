@@ -75,9 +75,9 @@ var sessions = {
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
-            console.log(Object.keys(items).length);
             console.log(items);
             for (var item in items) {
+                //console.log(item);
                 if (items.hasOwnProperty(item)) {
                     sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
                 }
@@ -138,6 +138,10 @@ var sessions = {
 
                         var sessionObj = {};
                         sessionObj[sessionInputField.value] = details;
+
+                        var x = [];
+                        x.push(details);
+                        console.log(x);
 
                         chrome.storage.sync.set(sessionObj, function() {
                             sessions.setInTable(sessionInputField.value, urls, time, true);

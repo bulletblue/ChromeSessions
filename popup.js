@@ -75,12 +75,8 @@ var sessions = {
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
-            console.log(items);
-            for (var item in items) {
-                //console.log(item);
-                if (items.hasOwnProperty(item)) {
-                    sessions.setInTable(item, items[item].urls,  items[item].timeStamp, false);
-                }
+            for (var i=0; i < items["sessions"].length; i++) {
+                sessions.setInTable(items["sessions"][i].name, items["sessions"][i].urls, items["sessions"][i].timeStamp, false);
             }
         });
     },
@@ -88,17 +84,9 @@ var sessions = {
     saveSession: function(e) {
         if (e.keyIdentifier === "Enter") {
             chrome.storage.sync.get(null, function(items) {
-
-                var sessionsList = [];
-                for (item in items) { 
-                    sessionsList.push(item); 
-                }
-
                 var msgAlert = document.getElementById("msg_alert");
                 var sessionInputField = document.getElementById("input_session");
                 var cancelSaveButton = document.getElementById("btn_cancelSave");
-
-
 
                 /* Session names must be max of 200 characters, unique, non-null, 
                 and a session will only be saved if there are less than 100 current sessions saved.*/
@@ -113,12 +101,12 @@ var sessions = {
                     msgAlert.style.visibility = "visible";
                     msgAlert.style.color = "red";
                 }
-                else if (keyExists(sessionInputField.value, sessionsList)) {
+                else if (keyExists(sessionInputField.value, items["sessions"])) {
                     msgAlert.innerHTML = "Session already exists.";
                     msgAlert.style.visibility = "visible";
                     msgAlert.style.color = "red";
                 }
-                else if (sessionsList.length === 100)
+                else if (items["sessions"].length === 100)
                 {
                     msgAlert.innerHTML = "Max sessions exceeded.";
                     msgAlert.style.visibility = "visible";
@@ -133,17 +121,20 @@ var sessions = {
                         }
 
                         var details = {};
+                        details["name"] = sessionInputField.value;
                         details["urls"] = urls;
                         details["timeStamp"] = time;
 
-                        var sessionObj = {};
-                        sessionObj[sessionInputField.value] = details;
+                        if (typeof(items["sessions"]) === "undefined") {
+                            var sessionArr = [];
+                            sessionArr.push(details);
+                            items["sessions"] = sessionArr;
+                        }
+                        else {
+                            items["sessions"].push(details);
+                        }
 
-                        var x = [];
-                        x.push(details);
-                        console.log(x);
-
-                        chrome.storage.sync.set(sessionObj, function() {
+                        chrome.storage.sync.set(items, function() {
                             sessions.setInTable(sessionInputField.value, urls, time, true);
                             sessionInputField.value = "";
                             hideSaveElements();
@@ -225,10 +216,22 @@ var sessions = {
     },
 
     removeSession: function(sessionKey, row) {
-        chrome.storage.sync.remove(sessionKey, function() {
+        chrome.storage.sync.get(null, function(items){
+            var index;
+            for (var i = 0; i < items["sessions"].length; i++) {
+                if (items["sessions"][i].name == sessionKey) index = i;
+            }
+
+            items["sessions"].splice(index, 1);
+            chrome.storage.sync.set(items);
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);
         });
+
+        // chrome.storage.sync.remove(sessionKey, function() {
+        //     var table = document.getElementById("sessions_table");
+        //     table.deleteRow(row);
+        // });
     }
 };
 

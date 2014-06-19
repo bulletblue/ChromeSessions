@@ -227,11 +227,6 @@ var sessions = {
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);
         });
-
-        // chrome.storage.sync.remove(sessionKey, function() {
-        //     var table = document.getElementById("sessions_table");
-        //     table.deleteRow(row);
-        // });
     }
 };
 

@@ -1,4 +1,8 @@
 function keyExists(key, sessionsList) {
+    if (typeof(sessionsList) === "undefined") {
+        return false;
+    }
+
     for (var i = 0; i < sessionsList.length; i++)
     {
         if (key === sessionsList[i]) {
@@ -75,8 +79,10 @@ var sessions = {
 
     getSessions: function() {
         chrome.storage.sync.get(null, function(items) {
-            for (var i=0; i < items["sessions"].length; i++) {
-                sessions.setInTable(items["sessions"][i].name, items["sessions"][i].urls, items["sessions"][i].timeStamp, false);
+            if (typeof(items["sessions"]) != "undefined") {
+                for (var i=0; i < items["sessions"].length; i++) {
+                    sessions.setInTable(items["sessions"][i].name, items["sessions"][i].urls, items["sessions"][i].timeStamp, false);
+                }
             }
         });
     },
@@ -106,7 +112,7 @@ var sessions = {
                     msgAlert.style.visibility = "visible";
                     msgAlert.style.color = "red";
                 }
-                else if (items["sessions"].length === 100)
+                else if (typeof(items["sessions"]) != "undefined" && items["sessions"].length === 100)
                 {
                     msgAlert.innerHTML = "Max sessions exceeded.";
                     msgAlert.style.visibility = "visible";
@@ -216,7 +222,7 @@ var sessions = {
     },
 
     removeSession: function(sessionKey, row) {
-        chrome.storage.sync.get(null, function(items){
+        chrome.storage.sync.get(null, function(items) {
             var index;
             for (var i = 0; i < items["sessions"].length; i++) {
                 if (items["sessions"][i].name == sessionKey) index = i;

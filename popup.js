@@ -5,7 +5,7 @@ function keyExists(key, sessionsList) {
 
     for (var i = 0; i < sessionsList.length; i++)
     {
-        if (key === sessionsList[i]) {
+        if (key === sessionsList[i].name) {
             return true;
         }
     }

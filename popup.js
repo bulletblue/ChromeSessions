@@ -25,7 +25,7 @@ function getTimeStamp() {
     }
     else if (now.getHours() === 12) {
         hours = 12;
-        amFlag = "PM;"
+        amFlag = "PM"
     }
     else if (now.getHours() === 0) {
         hours = 12;

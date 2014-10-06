@@ -44,7 +44,7 @@ function hideSaveElements() {
     document.getElementById("msg_alert").style.visibility = "hidden";
     document.getElementById("msg_alert").innerHTML = "Please enter a session name.";
     document.getElementById("msg_alert").style.color = "#696969";
-    document.getElementById('input_session').value = "";
+    document.getElementById("input_session").value = "";
     document.getElementById("input_session").style.visibility = "hidden";
     document.getElementById("btn_cancelSave").style.visibility = "hidden";
     document.getElementById("btn_confirmSave").style.visibility = "hidden";  

@@ -72,6 +72,11 @@ body {
     color:white;
 }
 
+.new_window_cell:hover {
+    background-color: Purple; /* --------- CHANGE THIS ------- */
+    color:white;
+}
+
 #container {
     min-height: 100%;
     position: relative;
@@ -152,7 +157,7 @@ tr:hover, tr:hover .date {
     background-color: #EFF4FB;
 }
 
-.remove_session {
+.remove_session, .new_window_session {
     text-align: center;
     width: 28px;
     margin: 0px;

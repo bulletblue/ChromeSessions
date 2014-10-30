@@ -50,7 +50,7 @@ function hideSaveElements() {
     document.getElementById("btn_confirmSave").style.visibility = "hidden";  
 }
 
-function showSaveElements() {
+function showSaveElements() { 
     document.getElementById("msg_alert").style.visibility = "visible";
     document.getElementById("input_session").style.visibility = "visible";
     document.getElementById("input_session").focus();
@@ -161,14 +161,20 @@ var sessions = {
     },
 
     setInTable: function(sessionName, urls, timeStamp, isNew) {
+        
+        //Session HTML Element
         var session = document.createElement("p");
         session.setAttribute("class", "session_cell ellipsis");
         session.appendChild(document.createTextNode(sessionName));
 
+
+        //Session timestamp
         var date = document.createElement("p");
         date.setAttribute("class", "date");
         date.appendChild(document.createTextNode(timeStamp));
 
+
+        //Remove button icon and HTML Element
         var iconRemove = document.createElement("i");
         iconRemove.setAttribute("class", "fa fa fa-times");
 
@@ -177,6 +183,18 @@ var sessions = {
         removeP.appendChild(iconRemove); 
         removeP.style.visibility = "hidden";
 
+
+        //Open in new window button icon and HTML Element
+        var openNew = document.createElement("i");
+        openNew.setAttribute("class", "fa fa fa-external-link");
+
+        var openNewP = document.createElement("p");
+        openNewP.setAttribute("class", "new_window_session");
+        openNewP.appendChild(openNew); 
+        openNewP.style.visibility = "hidden";
+
+
+        //Adding session HTML elements to the table
         var table = document.getElementById("sessions_table");
         var row = table.insertRow(0);
 
@@ -185,21 +203,30 @@ var sessions = {
         cellSession.appendChild(session);
         cellSession.appendChild(date);
 
-        var cellRemove = row.insertCell(1);
+        var cellNewWindow = row.insertCell(1);
+        cellNewWindow.setAttribute("class", "new_window_cell");
+        cellNewWindow.appendChild(openNewP);
+
+        var cellRemove = row.insertCell(2);
         cellRemove.setAttribute("class", "remove_cell");
         cellRemove.appendChild(removeP);
 
         cellSession.addEventListener("click", function() { sessions.openSession(urls) });
+        cellNewWindow.addEventListener("click", function() { sessions.openSession(urls) }); //CHANGE THIS
         cellRemove.addEventListener("click", function() { sessions.removeSession(sessionName, $(this).parent().index()); });       
         
         row.onmouseover =  function() { 
             removeP.style.visibility = "visible";
+            cellNewWindow.style.visibility = "visible";
             cellSession.style.borderRight = "2px solid white";
+            cellNewWindow.style.borderRight = "2px solid white";
         }
 
         row.onmouseout =  function() { 
             removeP.style.visibility = "hidden";
+            cellNewWindow.style.visibility = "hidden";
             cellSession.style.borderRight = "";
+            cellNewWindow.style.borderRight = "";
         }
     
         if (isNew) {

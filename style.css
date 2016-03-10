@@ -6,7 +6,7 @@ body {
     margin: 0px;
 }
 
-/* ------------ BUTTONS ------------ */ 
+/* ------------ BUTTONS ------------ */
 #top_buttons {
     padding-bottom: 15px;
 }
@@ -83,7 +83,7 @@ body {
 }
 
 
-/* ------------ ALERT ------------ */ 
+/* ------------ ALERT ------------ */
 #msg_alert {
     text-align:center;
     padding-top: 5px;
@@ -93,7 +93,7 @@ body {
     color: #696969;
 }
 
-/* ------------ TABLE ------------ */ 
+/* ------------ TABLE ------------ */
 #table_container {
     width: 90%;
     height: 87px;
@@ -115,6 +115,7 @@ table {
     border-collapse: collapse;
 }
 
+
 tr:nth-child(even) {
     background-color: #FAFBFD;
 }
@@ -131,10 +132,16 @@ tr:hover, tr:hover .date {
 }
 
 .session_cell {
-    width: 180px;
+    max-width: 180px;
     font-size: 12px;
     margin: 0px;
+    margin-left: 2px;
 }
+
+.date {
+  margin-left: 2px;
+}
+
 
 .ellipsis {
     white-space: nowrap;

@@ -131,8 +131,12 @@ tr:hover, tr:hover .date {
     cursor: pointer;
 }
 
+.session_row {
+  width: 100%;
+}
+
 .session_cell {
-    max-width: 180px;
+    max-width: 120px;
     font-size: 12px;
     margin: 0px;
     margin-left: 2px;
@@ -141,7 +145,6 @@ tr:hover, tr:hover .date {
 .date {
   margin-left: 2px;
 }
-
 
 .ellipsis {
     white-space: nowrap;

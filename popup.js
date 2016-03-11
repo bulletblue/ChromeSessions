@@ -173,7 +173,7 @@ var sessions = {
 
         //Open in new window button icon and HTML Element
         var openNew = document.createElement("i");
-        openNew.setAttribute("class", "fa fa-external-link fa-lg");
+        openNew.setAttribute("class", "fa fa-external-link");
         var openNewP = document.createElement("p");
         openNewP.setAttribute("class", "new_window_session");
         openNewP.setAttribute("title", "New Window");
@@ -195,7 +195,6 @@ var sessions = {
         row.setAttribute("class", "session_row");
 
         var cellSession = row.insertCell(0);
-        cellSession.setAttribute("title", sessionName);
         cellSession.setAttribute("class", "session_name");
         cellSession.appendChild(session);
         cellSession.appendChild(date);

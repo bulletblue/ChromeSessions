@@ -73,7 +73,7 @@ body {
 }
 
 .new_window_cell:hover {
-    background-color: Purple; /* --------- CHANGE THIS ------- */
+    background-color: Purple; /* --------- CHANGE THIS TO PURPLE USED IN EXTENSION ICON ------- */
     color:white;
 }
 

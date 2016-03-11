@@ -9,7 +9,7 @@ function keyExists(key, sessionsList) {
             return true;
         }
     }
-    
+
     return false;
 }
 
@@ -177,7 +177,7 @@ var sessions = {
 
         //Remove button icon and HTML Element
         var iconRemove = document.createElement("i");
-        iconRemove.setAttribute("class", "fa fa fa-times");
+        iconRemove.setAttribute("class", "fa fa-times");
 
         var removeP = document.createElement("p");
         removeP.setAttribute("class", "remove_session");
@@ -187,12 +187,12 @@ var sessions = {
 
         //Open in new window button icon and HTML Element
         var openNew = document.createElement("i");
-        openNew.setAttribute("class", "fa fa fa-external-link");
+        openNew.setAttribute("class", "fa fa-external-link fa-lg");
 
         var openNewP = document.createElement("p");
         openNewP.setAttribute("class", "new_window_session");
         openNewP.appendChild(openNew);
-        openNewP.style.visibility = "hidden";
+        // openNewP.style.visibility = "hidden";
 
 
         //Adding session HTML elements to the table

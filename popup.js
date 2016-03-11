@@ -9,6 +9,7 @@ function keyExists(key, sessionsList) {
             return true;
         }
     }
+    
     return false;
 }
 

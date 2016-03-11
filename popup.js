@@ -163,37 +163,31 @@ var sessions = {
 
     setInTable: function(sessionName, urls, timeStamp, isNew) {
 
-        //Session HTML Element
+        //Session HTML Element and TimeStamp
         var session = document.createElement("p");
         session.setAttribute("class", "session_cell ellipsis");
         session.appendChild(document.createTextNode(sessionName));
-
-
-        //Session timestamp
         var date = document.createElement("p");
         date.setAttribute("class", "date");
         date.appendChild(document.createTextNode(timeStamp));
 
+        //Open in new window button icon and HTML Element
+        var openNew = document.createElement("i");
+        openNew.setAttribute("class", "fa fa-external-link fa-lg");
+        var openNewP = document.createElement("p");
+        openNewP.setAttribute("class", "new_window_session");
+        openNewP.setAttribute("title", "New Window");
+        openNewP.appendChild(openNew);
+        openNewP.style.visibility = "hidden";
 
         //Remove button icon and HTML Element
         var iconRemove = document.createElement("i");
         iconRemove.setAttribute("class", "fa fa-times");
-
         var removeP = document.createElement("p");
         removeP.setAttribute("class", "remove_session");
+        removeP.setAttribute("title", "Delete");
         removeP.appendChild(iconRemove);
         removeP.style.visibility = "hidden";
-
-
-        //Open in new window button icon and HTML Element
-        var openNew = document.createElement("i");
-        openNew.setAttribute("class", "fa fa-external-link fa-lg");
-
-        var openNewP = document.createElement("p");
-        openNewP.setAttribute("class", "new_window_session");
-        openNewP.appendChild(openNew);
-        // openNewP.style.visibility = "hidden";
-
 
         //Adding session HTML elements to the table
         var table = document.getElementById("sessions_table");
@@ -220,14 +214,14 @@ var sessions = {
 
         row.onmouseover =  function() {
             removeP.style.visibility = "visible";
-            cellNewWindow.style.visibility = "visible";
+            openNewP.style.visibility = "visible";
             cellSession.style.borderRight = "2px solid white";
             cellNewWindow.style.borderRight = "2px solid white";
         }
 
         row.onmouseout =  function() {
             removeP.style.visibility = "hidden";
-            cellNewWindow.style.visibility = "hidden";
+            openNewP.style.visibility = "hidden";
             cellSession.style.borderRight = "";
             cellNewWindow.style.borderRight = "";
         }

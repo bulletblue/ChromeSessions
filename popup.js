@@ -208,8 +208,8 @@ var sessions = {
         cellRemove.setAttribute("class", "remove_cell");
         cellRemove.appendChild(removeP);
 
-        cellSession.addEventListener("click", function() { sessions.openSession(urls) });
-        cellNewWindow.addEventListener("click", function() { sessions.openSession(urls) }); //CHANGE THIS
+        cellSession.addEventListener("click", function() { sessions.openSession(urls, false) });
+        cellNewWindow.addEventListener("click", function() { sessions.openSession(urls, true) });
         cellRemove.addEventListener("click", function() { sessions.removeSession(sessionName, $(this).parent().index()); });
 
         row.onmouseover =  function() {
@@ -231,17 +231,16 @@ var sessions = {
         }
     },
 
-    openSession: function(urls) {
+    openSession: function(urls, useNewWindow) {
         chrome.tabs.query({"currentWindow": true}, function(tabs) {
-            if (tabs.length === 1 && tabs[0].url === "chrome://newtab/") {
-                for (var i = 0; i < urls.length; i++) {
-                    chrome.tabs.create({url: urls[i]});
-                }
-                chrome.tabs.remove(tabs[0].id);
+          if (useNewWindow === true) {
+            chrome.windows.create({url: urls, focused: true});
+          }
+          else {
+            for (var i = 0; i < urls.length; i++) {
+                chrome.tabs.create({url: urls[i]});
             }
-            else {
-                chrome.windows.create({url: urls, focused: true});
-            }
+          }
         });
     },
 

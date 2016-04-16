@@ -62,6 +62,7 @@ function showSaveElements() {
 var sessions = {
 
     startup: function() {
+
         this.getSessions();
 
         var saveButton = document.getElementById("btn_save");
@@ -236,8 +237,17 @@ var sessions = {
             chrome.windows.create({url: urls, focused: true});
           }
           else {
-            for (var i = 0; i < urls.length; i++) {
-                chrome.tabs.create({url: urls[i]});
+            // Remove "New Tab" from an empty window if it's the only tab open.
+            if (tabs.length === 1 && tabs[0].url === "chrome://newtab/") {
+              for (var i = 0; i < urls.length; i++) {
+                  chrome.tabs.create({url: urls[i]});
+                }
+                chrome.tabs.remove(tabs[0].id);
+            }
+            else {
+              for (var i = 0; i < urls.length; i++) {
+                  chrome.tabs.create({url: urls[i]});
+                }
             }
           }
         });

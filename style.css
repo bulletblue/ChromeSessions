@@ -12,7 +12,7 @@ body {
 }
 
 #btn_save:focus, #btn_cancelSave:focus {
-    outline: 0; /* Don't focus elements on load */
+    outline: 0; /* Don't focus element on load */
 }
 
 #btn_save, #btn_cancelSave, #btn_confirmSave {

@@ -1,3 +1,5 @@
+const brow = /Chrome/.test(navigator.userAgent) ? chrome : browser;
+
 function keyExists(key, sessionsList) {
     if (typeof(sessionsList) === "undefined") {
         return false;
@@ -80,7 +82,7 @@ var sessions = {
     },
 
     getSessions: function() {
-        chrome.storage.sync.get(null, function(items) {
+        brow.storage.sync.get(null).then(function(items) {
             if (typeof(items["sessions"]) != "undefined") {
                 for (var i=0; i < items["sessions"].length; i++) {
                     sessions.setInTable(items["sessions"][i].name, items["sessions"][i].urls, items["sessions"][i].timeStamp, false);
@@ -91,7 +93,7 @@ var sessions = {
 
     saveSession: function(e) {
         if (e.keyIdentifier === "Enter") {
-            chrome.storage.sync.get(null, function(items) {
+            brow.storage.sync.get(null).then(function(items) {
                 var msgAlert = document.getElementById("msg_alert");
                 var sessionInputField = document.getElementById("input_session");
                 var cancelSaveButton = document.getElementById("btn_cancelSave");
@@ -121,7 +123,7 @@ var sessions = {
                     msgAlert.style.color = "red";
                 }
                 else {
-                    chrome.tabs.query({"currentWindow": true}, function(tabs) {
+                    brow.tabs.query({"currentWindow": true}, function(tabs) {
                         var time = getTimeStamp();
                         var urls = [];
                         for (var i = 0; i < tabs.length; i++) {
@@ -142,7 +144,7 @@ var sessions = {
                             items["sessions"].push(details);
                         }
 
-                        chrome.storage.sync.set(items, function() {
+                        brow.storage.sync.set(items, function() {
                             sessions.setInTable(sessionInputField.value, urls, time, true);
                             sessionInputField.value = "";
                             hideSaveElements();
@@ -232,21 +234,21 @@ var sessions = {
     },
 
     openSession: function(urls, useNewWindow) {
-        chrome.tabs.query({"currentWindow": true}, function(tabs) {
+        brow.tabs.query({"currentWindow": true}, function(tabs) {
           if (useNewWindow === true) {
-            chrome.windows.create({url: urls, focused: true});
+            brow.windows.create({url: urls});
           }
           else {
             // Remove "New Tab" from an empty window if it's the only tab open.
             if (tabs.length === 1 && tabs[0].url === "chrome://newtab/") {
               for (var i = 0; i < urls.length; i++) {
-                  chrome.tabs.create({url: urls[i]});
+                  brow.tabs.create({url: urls[i]});
                 }
-                chrome.tabs.remove(tabs[0].id);
+                brow.tabs.remove(tabs[0].id);
             }
             else {
               for (var i = 0; i < urls.length; i++) {
-                  chrome.tabs.create({url: urls[i]});
+                  brow.tabs.create({url: urls[i]});
                 }
             }
           }
@@ -254,14 +256,14 @@ var sessions = {
     },
 
     removeSession: function(sessionKey, row) {
-        chrome.storage.sync.get(null, function(items) {
+        brow.storage.sync.get(null).then(function(items) {
             var index;
             for (var i = 0; i < items["sessions"].length; i++) {
                 if (items["sessions"][i].name == sessionKey) index = i;
             }
 
             items["sessions"].splice(index, 1);
-            chrome.storage.sync.set(items);
+            brow.storage.sync.set(items);
             var table = document.getElementById("sessions_table");
             table.deleteRow(row);
         });
